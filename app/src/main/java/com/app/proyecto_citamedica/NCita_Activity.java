@@ -57,6 +57,7 @@ private static String URL_BASE="https://appcolegiophp.herokuapp.com";
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ncita);
         //hola test cambio
+        //cambio
         inicializar();
         Intent intent=getIntent();
         String nombreUsuario=util.nombre;
@@ -95,12 +96,11 @@ private static String URL_BASE="https://appcolegiophp.herokuapp.com";
                         obtenerMedicos(obtenerIdEspecialidad(selectEspecialidad));
                         spMDisponible.setEnabled(true);
                     }
-
-
                 }else{
                     idespecialidad="";
                     spTEspecialidad.setEnabled(false);
                     spMDisponible.setEnabled(false);
+
                 }
             }
 
@@ -122,10 +122,8 @@ private static String URL_BASE="https://appcolegiophp.herokuapp.com";
                         obtenerMedicos(objeto.getId());
                         spMDisponible.setEnabled(true);
                     }
-
                 }
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
@@ -222,7 +220,6 @@ private static String URL_BASE="https://appcolegiophp.herokuapp.com";
         return idEspecialidad;
     }
     public void ActivarSpEstado(){
-
         Intent intent=getIntent();
         String mensaje=intent.getStringExtra("envEditar");
         if (mensaje!=null && mensaje.equals("Envio")){
