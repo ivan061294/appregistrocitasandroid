@@ -54,6 +54,7 @@ private static String URL_BASE="https://appcolegiophp.herokuapp.com";
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ncita);
+        //hola test cambio
         inicializar();
         Intent intent=getIntent();
         String Nombre=intent.getStringExtra("Nombres");
@@ -250,21 +251,6 @@ private static String URL_BASE="https://appcolegiophp.herokuapp.com";
 
 
     }
-
-
-    public void mensajeToast(String texto){
-        Toast toast1 =
-                Toast.makeText(getApplicationContext(),
-                        texto, Toast.LENGTH_SHORT);
-        toast1.show();
-    }
-    public void cargarSpinnerhorario(ArrayList<ClassCboModel> lstModelCbo){
-        util.lsthorarios.clear();
-        util.lsthorarios=lstModelCbo;
-        ArrayAdapter<ClassCboModel> modelo = new ArrayAdapter<ClassCboModel>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
-                lstModelCbo);
-        spTHorario.setAdapter(modelo);
-    }
     public void cargarSpinnerEspecialidad(ArrayList<ClassCboModel> lstModelCbo){
         util.lstEspecialidad.clear();
         util.lstEspecialidad=lstModelCbo;
@@ -279,6 +265,21 @@ private static String URL_BASE="https://appcolegiophp.herokuapp.com";
                 lstModelCbo);
         spMDisponible.setAdapter(modelo);
     }
+
+    public void mensajeToast(String texto){
+        Toast toast1 =
+                Toast.makeText(getApplicationContext(),
+                        texto, Toast.LENGTH_SHORT);
+        toast1.show();
+    }
+    public void cargarSpinnerhorario(ArrayList<ClassCboModel> lstModelCbo){
+        util.lsthorarios.clear();
+        util.lsthorarios=lstModelCbo;
+        ArrayAdapter<ClassCboModel> modelo = new ArrayAdapter<ClassCboModel>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
+                lstModelCbo);
+        spTHorario.setAdapter(modelo);
+    }
+
 
 
 
