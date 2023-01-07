@@ -76,9 +76,9 @@ private static String URL_BASE="https://appcolegiophp.herokuapp.com";
                 String nameValueCbo=spTHorario.getSelectedItem().toString();
                 Log.i("nameValueCbo",nameValueCbo);
                 for(ClassCboModel objeto : util.lsthorarios){
-                    if (objeto != null && !(objeto.valor.equals(nameValueCbo))) {
-                        spTEspecialidad.setEnabled(false);
-                        spMDisponible.setEnabled(false);
+                    if (objeto.valor.equals(nameValueCbo)) {
+                        spTEspecialidad.setEnabled(true);
+                        spMDisponible.setEnabled(true);
                     }else{
                         spTEspecialidad.setEnabled(false);
                         spMDisponible.setEnabled(false);
