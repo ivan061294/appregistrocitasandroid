@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -25,8 +26,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import Entidades.ClassCboModel;
+import Entidades.util;
 
 public class LCita_Activity extends AppCompatActivity {
 Button btnECita;
@@ -46,8 +51,8 @@ TextView  tvPacienteL;
         String Apellido=intent1.getStringExtra("Apellidos");
         Intent intent2=getIntent();
         String Pid=intent2.getStringExtra("Pid");
-        tvPacienteL.setText(Nombre+"  "+Apellido);
-        BuscarCita(Pid);
+        tvPacienteL.setText("Paciente : "+Nombre+"  "+Apellido);
+        //obtenerCitas(54);
         btnECita.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -57,47 +62,52 @@ TextView  tvPacienteL;
             }
         });
     }
-    public void BuscarCita(String InputCodigo){
-        StringRequest stringRequest=new StringRequest(Request.Method.GET, URL_LCitas, new Response.Listener<String>() {
+    private void obtenerCitas(int PId){
+        Log.i("obteniendo CITAS","service");
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+
+        StringRequest stringRequest = new StringRequest(
+                Request.Method.GET, URL_LCitas+PId, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
-                    JSONArray jsonArray = new JSONArray(response);
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        int id = jsonObject.getInt("idpaciente");
-                        int descripcion=jsonObject.getInt("Descripcion");
-                        Log.i("ONRESPONSE",":"+id);
-                        spCita.setId(id);
-                        spCita.setSelection(descripcion);
+                    JSONObject objSon = new JSONObject(response);
+                    JSONArray arr = objSon.getJSONArray("data");
+                    ArrayList<ClassCboModel> lstModelCbo = new ArrayList<ClassCboModel>();
+                    lstModelCbo.add(new ClassCboModel("0","Seleccione"));
+                    for (int i = 0; i < arr.length(); i++) {
+                        JSONObject citasObject=arr.getJSONObject(i);
+                        lstModelCbo.add(new ClassCboModel(citasObject.getString("Cid"),citasObject.getString("nombreapellidomedico")));
+
                     }
+                    cargarSpinnerCitas(lstModelCbo);
+
                 } catch (JSONException e) {
-                    Toast.makeText(LCita_Activity.this,"Error"+e.toString(),Toast.LENGTH_SHORT).show();
-                    Log.i("ONERROR","json ex:" +e.toString());
+                    e.printStackTrace();
                 }
 
             }
         }, new Response.ErrorListener() {
+
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(LCita_Activity.this, "ERROR"+error.toString(), Toast.LENGTH_SHORT).show();
-                Log.i("ONERROR","json ex:"+error.toString());
+                Log.i("Error servicio",error.getMessage());
             }
-        }){
-            @Nullable
-            @Override
-            protected Map<String,String> getParams() throws AuthFailureError {
-                Map<String,String>params=new HashMap<>();
-                params.put("Cid",InputCodigo);
-                return params;
-            }
-        };
-        RequestQueue requestQueue= Volley.newRequestQueue(this);
+        });
+
         requestQueue.add(stringRequest);
 
+
+    }
+    public void cargarSpinnerCitas(ArrayList<ClassCboModel>lstModelCbo){
+        util.lstCitas.clear();
+        util.lstCitas=lstModelCbo;
+        ArrayAdapter<ClassCboModel> modelo = new ArrayAdapter<ClassCboModel>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
+                lstModelCbo);
+        spCita.setAdapter(modelo);
     }
     public void inicializar(){
-        tvPacienteL=findViewById(R.id.txtPacienteL);
+        tvPacienteL=findViewById(R.id.tvPacienteL);
         btnECita=findViewById(R.id.btnEditarL);
         edtTHorario=findViewById(R.id.txtTHorario);
         edtEspecialidad=findViewById(R.id.txtTEspecialidad);

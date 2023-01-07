@@ -33,18 +33,12 @@
         tools:ignore="MissingConstraints" >
         <TextView
             android:id="@+id/tvPacienteL"
-            android:layout_width="wrap_content"
+            android:layout_width="330dp"
             android:layout_height="wrap_content"
+            android:text="Paciente:"
             android:textColor="@color/purple_700"
-            android:textStyle="bold"
             android:textSize="15dp"
-            android:textAlignment="center"
-            android:text="Paciente:"/>
-        <EditText
-            android:id="@+id/txtPacienteL"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+            android:textStyle="bold" />
     </LinearLayout>
         ----
         <TextView
