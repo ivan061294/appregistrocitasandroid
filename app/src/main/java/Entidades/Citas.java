@@ -112,17 +112,6 @@ public class Citas {
 
     @Override
     public String toString() {
-        return "Citas{" +
-                "Id=" + Id +
-                ", MedicoId='" + MedicoId + '\'' +
-                ", PacienteId='" + PacienteId + '\'' +
-                ", EspecialidadId='" + EspecialidadId + '\'' +
-                ", fechaAtencion='" + fechaAtencion + '\'' +
-                ", HorarioId='" + HorarioId + '\'' +
-                ", Estado='" + Estado + '\'' +
-                ", Observaciones='" + Observaciones + '\'' +
-                ", usuarioCreacion='" + usuarioCreacion + '\'' +
-                ", usuarioModificacion='" + usuarioModificacion + '\'' +
-                '}';
+        return Id +MedicoId + PacienteId+ EspecialidadId + fechaAtencion + HorarioId +Estado + Observaciones+ usuarioCreacion + usuarioModificacion ;
     }
 }

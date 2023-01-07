@@ -35,11 +35,13 @@
             android:id="@+id/tvDNI"
             android:textAlignment="center"
             android:text="DNI:"/>
+
         <EditText
             android:id="@+id/txtDNI"
             android:layout_width="40mm"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
-            android:layout_height="wrap_content"/>
+            android:inputType="number" />
         -----
         <TextView
             android:id="@+id/tvNombre"
@@ -111,11 +113,13 @@
             android:textSize="15dp"
             android:textAlignment="center"
             android:text="Telefono:"/>
+
         <EditText
             android:id="@+id/txtTelefono"
             android:layout_width="40mm"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
-            android:layout_height="wrap_content"/>
+            android:inputType="number" />
         ----
         <TextView
             android:id="@+id/tvSexo"
@@ -147,6 +151,7 @@
             android:layout_width="40mm"
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
+            android:hint="Ejemplo: 1999-04-06"
             android:inputType="date" />
         <Button
             android:id="@+id/btnGuardarP"
