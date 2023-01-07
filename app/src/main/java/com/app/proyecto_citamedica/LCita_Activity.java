@@ -38,6 +38,7 @@ TextView  tvPacienteL;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lcita);
+        //HOLA
         inicializar();
         Intent intent=getIntent();
         String Nombre=intent.getStringExtra("Nombres");
