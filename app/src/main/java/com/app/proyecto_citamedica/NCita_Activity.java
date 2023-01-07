@@ -33,22 +33,24 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import Entidades.Citas;
 import Entidades.ClassCboModel;
 import Entidades.Horarios;
 import Entidades.util;
 
 public class NCita_Activity extends AppCompatActivity {
 EditText edtPaciente,edtComentario;
-public static String URL_Registro_Cita="";
+
 Spinner spTHorario,spTEspecialidad,spMDisponible,spEstado;
 Button btnGuardarC;
 TextView tvEstado,tvPaciente;
+    private static String idhorario,idespecialidad,idmedico;
 
 private static String URL_BASE="https://appcolegiophp.herokuapp.com";
     private static String OBTENER_HORARIO="/obtenerHorario.php";
     private static String OBTENER_ESPECIALIDAD="/obtenerEspecialidad.php";
     private static String OBTENER_MEDICOS="/obtenerMedicos.php?";
-
+    public static String REGSISTRAR_CITA="/registrarCita.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,34 +59,48 @@ private static String URL_BASE="https://appcolegiophp.herokuapp.com";
         //hola test cambio
         inicializar();
         Intent intent=getIntent();
-        String Nombre=intent.getStringExtra("Nombres");
+        String nombreUsuario=util.nombre;
         Intent intent1=getIntent();
-        String Apellido=intent1.getStringExtra("Apellidos");
+        String apellidoUsuario=util.apellido;
         Intent intent2=getIntent();
-        String Pid=intent2.getStringExtra("Pid");
+        String pacienteId=util.pId;
         spEstado.setEnabled(false);
         tvEstado.setVisibility(View.INVISIBLE);
         spEstado.setVisibility(View.INVISIBLE);
         ActivarSpEstado();
-        tvPaciente.setText("Paciente:  "+Nombre+"  "+Apellido);
+        tvPaciente.setText("Paciente:  "+nombreUsuario+"  "+apellidoUsuario);
         obtenerHorarios();
         obtenerEspecialidad();
-        obtenerMedicos("4");
 
         spTHorario.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String nameValueCbo=spTHorario.getSelectedItem().toString();
                 Log.i("nameValueCbo",nameValueCbo);
+                boolean isSelected=false;
+                idhorario="";
                 for(ClassCboModel objeto : util.lsthorarios){
-                    if (objeto.valor.equals(nameValueCbo)) {
-                        spTEspecialidad.setEnabled(true);
+                    Log.i("Horiofor",objeto.toString());
+                    Log.i("namevalucbo",nameValueCbo);
+                    if (!(objeto.valor.equals("Seleccione")) && objeto.valor.equals(nameValueCbo)) {
+                        isSelected=true;
+                        idhorario= objeto.getId();
+                    }
+                }
+                if (isSelected) {
+                    spTEspecialidad.setEnabled(true);
+                    String selectEspecialidad=spTEspecialidad.getSelectedItem().toString();
+                    if (!(selectEspecialidad.isEmpty()) && !(selectEspecialidad.equals("Seleccione"))) {
+                        idespecialidad=obtenerIdEspecialidad(selectEspecialidad);
+                        obtenerMedicos(obtenerIdEspecialidad(selectEspecialidad));
                         spMDisponible.setEnabled(true);
-                    }else{
-                        spTEspecialidad.setEnabled(false);
-                        spMDisponible.setEnabled(false);
                     }
 
+
+                }else{
+                    idespecialidad="";
+                    spTEspecialidad.setEnabled(false);
+                    spMDisponible.setEnabled(false);
                 }
             }
 
@@ -96,13 +112,15 @@ private static String URL_BASE="https://appcolegiophp.herokuapp.com";
         spTEspecialidad.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String nameValueCbo=spTHorario.getSelectedItem().toString();
-                Log.i("nameValueCbo",nameValueCbo);
-                for(ClassCboModel objeto : util.lsthorarios){
-                    if (objeto != null && !(objeto.valor.equals(nameValueCbo))) {
-                        spMDisponible.setEnabled(false);
-                    }else{
+                String nameValueCbo=spTEspecialidad.getSelectedItem().toString();
+                Log.i("nameValueCboespecialidadS",nameValueCbo);
+                spMDisponible.setEnabled(false);
+                idespecialidad="";
+                for(ClassCboModel objeto : util.lstEspecialidad){
+                    if (!(objeto.valor.equals("Seleccione")) && objeto.valor.equals(nameValueCbo)) {
+                        idespecialidad=objeto.getId();
                         obtenerMedicos(objeto.getId());
+                        spMDisponible.setEnabled(true);
                     }
 
                 }
@@ -113,6 +131,95 @@ private static String URL_BASE="https://appcolegiophp.herokuapp.com";
 
             }
         });
+        spMDisponible.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String nameValueCbo=spMDisponible.getSelectedItem().toString();
+                Log.i("nameValueCboMedico",nameValueCbo);
+                for(ClassCboModel objeto : util.lstMedicos){
+                    if (!(objeto.valor.equals("Seleccione")) && objeto.valor.equals(nameValueCbo)) {
+
+                        idmedico=objeto.getId();
+                    }
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        btnGuardarC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Citas cita = new Citas();
+                cita.setHorarioId(idhorario);
+                cita.setEspecialidadId(idespecialidad);
+                cita.setMedicoId(idmedico);
+                cita.setObservaciones(edtComentario.getText().toString());
+                cita.setFechaAtencion("2023-01-07");
+                cita.setPacienteId(pacienteId);
+                cita.setUsuarioCreacion(nombreUsuario);
+                Registrarcita(cita);
+                Log.i("citasSave",cita.toString());
+            }
+        });
+    }
+    public void Registrarcita(Citas cita){
+
+        StringRequest stringRequest=new StringRequest(Request.Method.POST, URL_BASE+REGSISTRAR_CITA, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    String success = jsonObject.getString("success");
+                    String message = jsonObject.getString("message");
+                    if (success.equals("1")) {
+                        mensajeToast(message);
+                        Intent i = new Intent(NCita_Activity.this,Menu_Activity.class);
+                        startActivity(i);
+                    }
+                } catch (JSONException ex) {
+                    mensajeToast("Error en Registrar");
+                    Log.i("error",ex.toString());
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mensajeToast("Error en Servicio Externo");
+                Log.i("error",error.toString());
+            }
+        })
+        {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> param=new HashMap<>();
+                param.put("Mid",cita.getMedicoId());
+                param.put("Pid",cita.getPacienteId());
+                param.put("Eid",cita.getEspecialidadId());
+                param.put("FechaAtencion",cita.getFechaAtencion());
+                param.put("Hid",cita.getHorarioId());
+                param.put("observaciones",cita.getObservaciones());
+                param.put("usuarioRegistro",cita.getUsuarioCreacion());
+                return param;
+            }
+        };
+        RequestQueue requestQueue= Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+    public String obtenerIdEspecialidad(String nombreEspecialidad){
+        String idEspecialidad="";
+        for(ClassCboModel objeto : util.lstEspecialidad){
+
+            if (!(objeto.getValor().equals("Seleccione")) && objeto.getValor().equals(nombreEspecialidad)) {
+                idEspecialidad= objeto.getId();
+            }
+        }
+        return idEspecialidad;
     }
     public void ActivarSpEstado(){
 
@@ -152,7 +259,9 @@ private static String URL_BASE="https://appcolegiophp.herokuapp.com";
                     JSONObject objSon = new JSONObject(response);
 
                     JSONArray arr = objSon.getJSONArray("data");
+
                      ArrayList<ClassCboModel> lstModelCbo = new ArrayList<ClassCboModel>();
+                    lstModelCbo.add(new ClassCboModel("0","Seleccione"));
                     for (int i = 0; i < arr.length(); i++) {
                         JSONObject horarioObject=arr.getJSONObject(i);
                         lstModelCbo.add(new ClassCboModel(horarioObject.getString("Hid"),horarioObject.getString("tipoHorario")));
@@ -190,6 +299,7 @@ private static String URL_BASE="https://appcolegiophp.herokuapp.com";
                     JSONObject objSon = new JSONObject(response);
                     JSONArray arr = objSon.getJSONArray("data");
                     ArrayList<ClassCboModel> lstModelCbo = new ArrayList<ClassCboModel>();
+                    lstModelCbo.add(new ClassCboModel("0","Seleccione"));
                     for (int i = 0; i < arr.length(); i++) {
                         JSONObject horarioObject=arr.getJSONObject(i);
                         lstModelCbo.add(new ClassCboModel(horarioObject.getString("Eid"),horarioObject.getString("nombre")));
@@ -224,9 +334,9 @@ private static String URL_BASE="https://appcolegiophp.herokuapp.com";
             public void onResponse(String response) {
                 try {
                     JSONObject objSon = new JSONObject(response);
-
                     JSONArray arr = objSon.getJSONArray("data");
                     ArrayList<ClassCboModel> lstModelCbo = new ArrayList<ClassCboModel>();
+                    lstModelCbo.add(new ClassCboModel("0","Seleccione"));
                     for (int i = 0; i < arr.length(); i++) {
                         JSONObject horarioObject=arr.getJSONObject(i);
                         lstModelCbo.add(new ClassCboModel(horarioObject.getString("Mid"),horarioObject.getString("nombres")));

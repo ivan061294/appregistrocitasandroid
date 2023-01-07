@@ -4,18 +4,20 @@ import java.util.Date;
 
 public class Citas {
     private int Id;
-    private int MedicoId;
-    private int PacienteId;
-    private int EspecialidadId;
-    private Date fechaAtencion;
-    private int HorarioId;
-    private int Estado;
+    private String MedicoId;
+    private String PacienteId;
+    private String EspecialidadId;
+    private String fechaAtencion;
+    private String HorarioId;
+    private String Estado;
     private String Observaciones;
+    private String usuarioCreacion;
+    private String usuarioModificacion;
 
     public Citas() {
     }
 
-    public Citas(int id, int medicoId, int pacienteId, int especialidadId, Date fechaAtencion, int horarioId, int estado, String observaciones) {
+    public Citas(int id, String medicoId, String pacienteId, String especialidadId, String fechaAtencion, String horarioId, String estado, String observaciones, String usuarioCreacion, String usuarioModificacion) {
         Id = id;
         MedicoId = medicoId;
         PacienteId = pacienteId;
@@ -24,6 +26,8 @@ public class Citas {
         HorarioId = horarioId;
         Estado = estado;
         Observaciones = observaciones;
+        this.usuarioCreacion = usuarioCreacion;
+        this.usuarioModificacion = usuarioModificacion;
     }
 
     public int getId() {
@@ -34,51 +38,51 @@ public class Citas {
         Id = id;
     }
 
-    public int getMedicoId() {
+    public String getMedicoId() {
         return MedicoId;
     }
 
-    public void setMedicoId(int medicoId) {
+    public void setMedicoId(String medicoId) {
         MedicoId = medicoId;
     }
 
-    public int getPacienteId() {
+    public String getPacienteId() {
         return PacienteId;
     }
 
-    public void setPacienteId(int pacienteId) {
+    public void setPacienteId(String pacienteId) {
         PacienteId = pacienteId;
     }
 
-    public int getEspecialidadId() {
+    public String getEspecialidadId() {
         return EspecialidadId;
     }
 
-    public void setEspecialidadId(int especialidadId) {
+    public void setEspecialidadId(String especialidadId) {
         EspecialidadId = especialidadId;
     }
 
-    public Date getFechaAtencion() {
+    public String getFechaAtencion() {
         return fechaAtencion;
     }
 
-    public void setFechaAtencion(Date fechaAtencion) {
+    public void setFechaAtencion(String fechaAtencion) {
         this.fechaAtencion = fechaAtencion;
     }
 
-    public int getHorarioId() {
+    public String getHorarioId() {
         return HorarioId;
     }
 
-    public void setHorarioId(int horarioId) {
+    public void setHorarioId(String horarioId) {
         HorarioId = horarioId;
     }
 
-    public int getEstado() {
+    public String getEstado() {
         return Estado;
     }
 
-    public void setEstado(int estado) {
+    public void setEstado(String estado) {
         Estado = estado;
     }
 
@@ -90,4 +94,35 @@ public class Citas {
         Observaciones = observaciones;
     }
 
+    public String getUsuarioCreacion() {
+        return usuarioCreacion;
+    }
+
+    public void setUsuarioCreacion(String usuarioCreacion) {
+        this.usuarioCreacion = usuarioCreacion;
+    }
+
+    public String getUsuarioModificacion() {
+        return usuarioModificacion;
+    }
+
+    public void setUsuarioModificacion(String usuarioModificacion) {
+        this.usuarioModificacion = usuarioModificacion;
+    }
+
+    @Override
+    public String toString() {
+        return "Citas{" +
+                "Id=" + Id +
+                ", MedicoId='" + MedicoId + '\'' +
+                ", PacienteId='" + PacienteId + '\'' +
+                ", EspecialidadId='" + EspecialidadId + '\'' +
+                ", fechaAtencion='" + fechaAtencion + '\'' +
+                ", HorarioId='" + HorarioId + '\'' +
+                ", Estado='" + Estado + '\'' +
+                ", Observaciones='" + Observaciones + '\'' +
+                ", usuarioCreacion='" + usuarioCreacion + '\'' +
+                ", usuarioModificacion='" + usuarioModificacion + '\'' +
+                '}';
+    }
 }

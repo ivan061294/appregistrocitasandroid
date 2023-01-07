@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import Entidades.util;
+
 public class Menu_Activity extends AppCompatActivity {
 Button btnNCita,btnVerC,btnQuienesSomos;
     @Override
@@ -25,6 +27,7 @@ Button btnNCita,btnVerC,btnQuienesSomos;
             @Override
             public void onClick(View view) {
                 Intent i=new Intent(Menu_Activity.this,LCita_Activity.class);
+                //checkar kelvin
                 i.putExtra("Nombres",Nombre);
                 i.putExtra("Apellidos",Apellido);
                 i.putExtra("Pid",Pid);
