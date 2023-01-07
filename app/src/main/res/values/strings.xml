@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Proyecto_CitaMedica</string>
+    <string name="tDNI">Ingrese su DNI:</string>
+    <string name="tUsuario">Ingrese su Usuario:</string>
+    <string name="tNombre">Ingrese su nombre:</string>
+    <string name="tSexo">Ingrese su Sexo:</string>
+    <string name="tContrasena">Ingrese su Contraseña:</string>
+    <string name="tDoctor">Doctor:</string>
+    <string name="tFechaN">Ingrese su fecha de nacimiento:</string>
+    <string name="tBIngresar">Ingresar</string>
+    <string name="title_activity_from_npaciente">FromNPaciente</string>
+</resources>
