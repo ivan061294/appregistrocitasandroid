@@ -259,13 +259,6 @@ private static String URL_BASE="https://appcolegiophp.herokuapp.com";
                         texto, Toast.LENGTH_SHORT);
         toast1.show();
     }
-    public void cargarSpinnerhorario(ArrayList<ClassCboModel> lstModelCbo){
-        util.lsthorarios.clear();
-        util.lsthorarios=lstModelCbo;
-        ArrayAdapter<ClassCboModel> modelo = new ArrayAdapter<ClassCboModel>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
-                lstModelCbo);
-        spTHorario.setAdapter(modelo);
-    }
     public void cargarSpinnerEspecialidad(ArrayList<ClassCboModel> lstModelCbo){
         util.lstEspecialidad.clear();
         util.lstEspecialidad=lstModelCbo;
@@ -273,14 +266,20 @@ private static String URL_BASE="https://appcolegiophp.herokuapp.com";
                 lstModelCbo);
         spTEspecialidad.setAdapter(modelo);
     }
-    public void cargarSpinnerMedicos(ArrayList<ClassCboModel> lstModelCbo){
+    public void cargarSpinnerMedicos(ArrayList<ClassCboModel> lstModelCbo) {
         util.lstMedicos.clear();
-        util.lstMedicos=lstModelCbo;
+        util.lstMedicos = lstModelCbo;
         ArrayAdapter<ClassCboModel> modelo = new ArrayAdapter<ClassCboModel>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
                 lstModelCbo);
         spMDisponible.setAdapter(modelo);
     }
+    public void cargarSpinnerhorario(ArrayList<ClassCboModel> lstModelCbo){
+        util.lsthorarios.clear();
+        util.lsthorarios=lstModelCbo;
+        ArrayAdapter<ClassCboModel> modelo = new ArrayAdapter<ClassCboModel>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
+                lstModelCbo);
+        spTHorario.setAdapter(modelo);
+    }
 
+    }
 
-
-}
