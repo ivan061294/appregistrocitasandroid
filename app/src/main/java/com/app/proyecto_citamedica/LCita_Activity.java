@@ -37,15 +37,21 @@ import Entidades.util;
 public class LCita_Activity extends AppCompatActivity {
 Button btnECita;
 public static String URL_LCitas="https://appcolegiophp.herokuapp.com/obtenercitaIdPaciente.php?";
+    public static String URL_BCitas="https://appcolegiophp.herokuapp.com/obtenerCitaId.php?";
 EditText edtTHorario, edtEspecialidad,edtMDisponible,edtFAtencion;
 Spinner spCita;
 TextView  tvPacienteL;
+public static String cid="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lcita);
         //HOLA
         inicializar();
+        edtTHorario.setEnabled(false);
+        edtMDisponible.setEnabled(false);
+        edtEspecialidad.setEnabled(false);
+        edtFAtencion.setEnabled(false);
         Intent intent=getIntent();
         String Nombre=intent.getStringExtra("Nombres");
         Intent intent1=getIntent();
@@ -63,6 +69,7 @@ TextView  tvPacienteL;
             }
         });
     }
+    public static ArrayList<ClassCboModel> lstCitas1 = new ArrayList<ClassCboModel>();
     private void obtenerCitas(int PId){
         Log.i("obteniendo CITAS","service");
         RequestQueue requestQueue = Volley.newRequestQueue(this);
@@ -74,13 +81,13 @@ TextView  tvPacienteL;
                 try {
                     JSONObject objSon = new JSONObject(response);
                     JSONArray arr = objSon.getJSONArray("data");
-                    ArrayList<Citas> lstCitasL = new ArrayList<Citas>();
-                    lstCitasL.add(new Citas(0,"","","","","","","","",""));
+                    ArrayList<ClassCboModel> lstCitas1 = new ArrayList<ClassCboModel>();
+                    lstCitas1.add(new ClassCboModel("0","Seleccionar"));
                     for(int i=0;i<arr.length();i++){
                         JSONObject objCitas=arr.getJSONObject(i);
-                        lstCitasL.add(new Citas(objCitas.getInt("Pid"), objCitas.getString("Cid"), objCitas.getString("Hid"), objCitas.getString("Eid"), objCitas.getString("Mid"), objCitas.getString("FechaAtencion"),objCitas.getString("estado"),objCitas.getString("observaciones"),objCitas.getString("usuarioRegistro"),objCitas.getString("usuarioModificacion")));
+                        lstCitas1.add(new ClassCboModel(objCitas.getString("Pid"), objCitas.getString("Cid")));
                     }
-                    cargarSpinnerCitas(lstCitasL);
+                    cargarSpinnerCitas(lstCitas1);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -98,11 +105,11 @@ TextView  tvPacienteL;
 
 
     }
-    public void cargarSpinnerCitas(ArrayList<Citas>lstCitas){
-        util.lstCitas.clear();
-        util.lstCitas=lstCitas;
-        ArrayAdapter<Citas> modelo = new ArrayAdapter<Citas>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
-                lstCitas);
+    public void cargarSpinnerCitas(ArrayList<ClassCboModel>lstCitas2){
+        lstCitas1.clear();
+        lstCitas1=lstCitas2;
+        ArrayAdapter<ClassCboModel> modelo = new ArrayAdapter<ClassCboModel>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
+                lstCitas2);
         spCita.setAdapter(modelo);
     }
     public void inicializar(){
