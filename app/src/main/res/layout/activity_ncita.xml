@@ -20,18 +20,22 @@
             android:textColor="@color/BlancoPerla"
             android:textStyle="bold"/>
     </LinearLayout>
+
     <LinearLayout
-        android:layout_margin="30dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:layout_margin="30dp"
         android:background="@color/BlancoPerla"
-        tools:ignore="MissingConstraints" >
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="30dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="5mm"
-            tools:ignore="MissingConstraints,Orientation"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            tools:ignore="MissingConstraints,Orientation">
 
             <TextView
                 android:id="@+id/tvPaciente"
@@ -44,101 +48,112 @@
                 android:textStyle="bold" />
 
         </LinearLayout>
+
         <TextView
-            android:layout_marginTop="15dp"
+            android:id="@+id/tvEstado"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/purple_700"
-            android:textStyle="bold"
-            android:textSize="15dp"
-            android:id="@+id/tvEstado"
+            android:layout_marginTop="10dp"
+            android:text="Estado:"
             android:textAlignment="center"
-            android:text="Estado:"/>
+            android:textColor="@color/purple_700"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
         <Spinner
             android:id="@+id/spEstado"
-            android:layout_marginTop="15dp"
             android:layout_width="40mm"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
-            android:layout_height="wrap_content"/>
+            android:layout_marginTop="15dp" />
         -----
+
         <TextView
             android:id="@+id/tvTHorario"
-            android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/purple_700"
-            android:textStyle="bold"
-            android:textSize="15dp"
+            android:layout_marginTop="10dp"
+            android:text="Tipo de Horario:"
             android:textAlignment="center"
-            android:text="Tipo de Horario:"/>
+            android:textColor="@color/purple_700"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
         <Spinner
             android:id="@+id/cboTHorario"
             android:layout_width="40mm"
-            android:layout_marginTop="15dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
-            android:layout_height="wrap_content"/>
+            android:layout_marginTop="15dp" />
         ----
+
         <TextView
             android:id="@+id/tvEspecialidad"
-            android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/purple_700"
-            android:textStyle="bold"
-            android:textSize="15dp"
+            android:layout_marginTop="10dp"
+            android:text="Tipo de especialidad:"
             android:textAlignment="center"
-            android:text="Tipo de especialidad:"/>
+            android:textColor="@color/purple_700"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
         <Spinner
             android:id="@+id/cboTEspecialidad"
             android:layout_width="40mm"
-            android:layout_marginTop="15dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
-            android:layout_height="wrap_content"/>
+            android:layout_marginTop="15dp" />
         ---
+
         <TextView
             android:id="@+id/tvMDisponible"
-            android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/purple_700"
-            android:textStyle="bold"
-            android:textSize="15dp"
+            android:layout_marginTop="10dp"
+            android:text="Medicos Disponibles:"
             android:textAlignment="center"
-            android:text="Medicos Disponibles:"/>
+            android:textColor="@color/purple_700"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
         <Spinner
             android:id="@+id/cboMDisponible"
             android:layout_width="40mm"
-            android:layout_marginTop="15dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
-            android:layout_height="wrap_content"/>
+            android:layout_marginTop="15dp" />
         ----
+
         <TextView
             android:id="@+id/tvComentario"
-            android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/purple_700"
-            android:textStyle="bold"
-            android:textSize="15dp"
+            android:layout_marginTop="10dp"
+            android:text="Comentarios:"
             android:textAlignment="center"
-            android:text="Comentarios:"/>
+            android:textColor="@color/purple_700"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
         <EditText
             android:id="@+id/txtComentario"
             android:layout_width="40mm"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
-            android:layout_marginTop="15dp"
-            android:layout_height="wrap_content"/>
+            android:layout_marginTop="15dp" />
         ----
+
         <TextView
             android:id="@+id/tvFAtencion"
-            android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/purple_700"
-            android:textStyle="bold"
-            android:textSize="15dp"
+            android:layout_marginTop="10dp"
+            android:text="Fecha de atencion:"
             android:textAlignment="center"
-            android:text="Fecha de atencion:"/>
+            android:textColor="@color/purple_700"
+            android:textSize="15dp"
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/txtFAtencionN"
@@ -149,14 +164,15 @@
             android:hint="Ejemplo:1999-10-25"
             android:inputType="date" />
         ----
+
         <Button
             android:id="@+id/btnGuardarC"
-            android:layout_marginTop="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Registrar"
-            android:textColor="@color/black"
+            android:layout_marginStart="20mm"
+            android:layout_marginTop="10dp"
             android:backgroundTint="@color/CelestePastel"
-            android:layout_marginStart="20mm"/>
+            android:text="Registrar"
+            android:textColor="@color/black" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
