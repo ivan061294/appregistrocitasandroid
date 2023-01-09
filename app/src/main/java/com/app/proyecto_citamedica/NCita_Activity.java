@@ -39,7 +39,7 @@ import Entidades.Horarios;
 import Entidades.util;
 
 public class NCita_Activity extends AppCompatActivity {
-EditText edtPaciente,edtComentario;
+EditText edtPaciente,edtComentario,edtFAtencionN;
 
 Spinner spTHorario,spTEspecialidad,spMDisponible,spEstado;
 Button btnGuardarC;
@@ -210,7 +210,7 @@ private static String URL_BASE="https://appcolegiophp.herokuapp.com";
                 cita.setEspecialidadId(idespecialidad);
                 cita.setMedicoId(idmedico);
                 cita.setObservaciones(edtComentario.getText().toString());
-                cita.setFechaAtencion("2023-01-07");
+                cita.setFechaAtencion(edtFAtencionN.getText().toString());
                 cita.setPacienteId(util.pId);
                 cita.setUsuarioCreacion(util.nombre);
                 cita.setEstado(estado);
@@ -232,6 +232,7 @@ private static String URL_BASE="https://appcolegiophp.herokuapp.com";
                     Log.i("cita encontrada!!",cita.toString2());
                     citaUpdate=cita;
                     edtComentario.setText(cita.getObservaciones());
+                    edtFAtencionN.setText(cita.getFechaAtencion());
                     isCboEstado=true;
                     isCboHorario=true;
                     isCboEspecialidad=true;
@@ -362,7 +363,7 @@ private static String URL_BASE="https://appcolegiophp.herokuapp.com";
         spEstado=findViewById(R.id.spEstado);
         btnGuardarC=findViewById(R.id.btnGuardarC);
         tvPaciente=findViewById(R.id.tvPaciente);
-        //edtPaciente=
+        edtFAtencionN=findViewById(R.id.txtFAtencionN);
         edtComentario=findViewById(R.id.txtComentario);
         spTEspecialidad=findViewById(R.id.cboTEspecialidad);
         spTHorario=findViewById(R.id.cboTHorario);

@@ -128,6 +128,27 @@
             android:layout_marginLeft="40dp"
             android:layout_marginTop="15dp"
             android:layout_height="wrap_content"/>
+        ----
+        <TextView
+            android:id="@+id/tvFAtencion"
+            android:layout_marginTop="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/purple_700"
+            android:textStyle="bold"
+            android:textSize="15dp"
+            android:textAlignment="center"
+            android:text="Fecha de atencion:"/>
+
+        <EditText
+            android:id="@+id/txtFAtencionN"
+            android:layout_width="40mm"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="15dp"
+            android:hint="Ejemplo:1999-10-25"
+            android:inputType="date" />
+        ----
         <Button
             android:id="@+id/btnGuardarC"
             android:layout_marginTop="15dp"
