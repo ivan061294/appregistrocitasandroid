@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -52,24 +53,56 @@ public static String cid="";
         edtMDisponible.setEnabled(false);
         edtEspecialidad.setEnabled(false);
         edtFAtencion.setEnabled(false);
-        Intent intent=getIntent();
-        String Nombre=intent.getStringExtra("Nombres");
-        Intent intent1=getIntent();
-        String Apellido=intent1.getStringExtra("Apellidos");
-        Intent intent2=getIntent();
-        String Pid=intent2.getStringExtra("Pid");
+        btnECita.setEnabled(false);
+        String Nombre=util.nombre;
+        String Apellido=util.apellido;
+        String Pid=util.pId;
         tvPacienteL.setText("Paciente : "+Nombre+"  "+Apellido);
         obtenerCitas(Integer.parseInt(Pid));
+
         btnECita.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i=new Intent(LCita_Activity.this,NCita_Activity.class);
-                i.putExtra("envEditar","Envio");
-                startActivity(i);
+                String nameValueCbo=spCita.getSelectedItem().toString();
+                if (nameValueCbo != null && !(nameValueCbo.equalsIgnoreCase("Seleccione"))) {
+                    Intent i=new Intent(LCita_Activity.this,NCita_Activity.class);
+                    i.putExtra("envEditar","Envio");
+                    i.putExtra("envIdCbo",nameValueCbo);
+                    startActivity(i);
+                }
+
+            }
+        });
+        spCita.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String nameValueCbo=spCita.getSelectedItem().toString();
+                Log.i("nameValueCbo",nameValueCbo);
+                edtTHorario.setText("");
+                edtEspecialidad.setText("");
+                edtMDisponible.setText("");
+                edtFAtencion.setText("");
+                btnECita.setEnabled(false);
+                for(Citas objeto :util.lstCitas1){
+                    if (objeto.getcIdCbo().equalsIgnoreCase(nameValueCbo)) {
+                        Log.i("objeto encontrado",objeto.toString2());
+                        edtTHorario.setText(objeto.getNomHorario());
+                        edtEspecialidad.setText(objeto.getNomEspecialidad());
+                        edtMDisponible.setText(objeto.getNomMedico());
+                        edtFAtencion.setText(objeto.getFechaAtencion());
+                        btnECita.setEnabled(true);
+                    }
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
     }
-    public static ArrayList<ClassCboModel> lstCitas1 = new ArrayList<ClassCboModel>();
+
     private void obtenerCitas(int PId){
         Log.i("obteniendo CITAS","service");
         RequestQueue requestQueue = Volley.newRequestQueue(this);
@@ -81,11 +114,27 @@ public static String cid="";
                 try {
                     JSONObject objSon = new JSONObject(response);
                     JSONArray arr = objSon.getJSONArray("data");
-                    ArrayList<ClassCboModel> lstCitas1 = new ArrayList<ClassCboModel>();
-                    lstCitas1.add(new ClassCboModel("0","Seleccionar"));
+                    ArrayList<Citas> lstCitas1 = new ArrayList<Citas>();
+                    Citas cita;
+                    cita = new Citas();
+                    cita.setcId("0");
+                    cita.setcIdCbo("Seleccione");
+                    lstCitas1.add(cita);
                     for(int i=0;i<arr.length();i++){
+                        cita = new Citas();
                         JSONObject objCitas=arr.getJSONObject(i);
-                        lstCitas1.add(new ClassCboModel(objCitas.getString("Pid"), objCitas.getString("Cid")));
+                        cita.setcId(objCitas.getString("Cid"));
+                        cita.setcIdCbo("Cita n.º :"+objCitas.getString("Cid"));
+                        cita.setMedicoId(objCitas.getString("Mid"));
+                        cita.setNomMedico(objCitas.getString("nombreapellidomedico"));
+                        cita.setEspecialidadId(objCitas.getString("Eid"));
+                        cita.setNomEspecialidad(objCitas.getString("nombre"));
+                        cita.setFechaAtencion(objCitas.getString("FechaAtencion"));
+                        cita.setHorarioId(objCitas.getString("Hid"));
+                        cita.setNomHorario(objCitas.getString("tipoHorario"));
+                        cita.setObservaciones(objCitas.getString("observaciones"));
+                        cita.setEstado(objCitas.getString("estado"));
+                        lstCitas1.add(cita);
                     }
                     cargarSpinnerCitas(lstCitas1);
                 } catch (JSONException e) {
@@ -105,10 +154,10 @@ public static String cid="";
 
 
     }
-    public void cargarSpinnerCitas(ArrayList<ClassCboModel>lstCitas2){
-        lstCitas1.clear();
-        lstCitas1=lstCitas2;
-        ArrayAdapter<ClassCboModel> modelo = new ArrayAdapter<ClassCboModel>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
+    public void cargarSpinnerCitas(ArrayList<Citas>lstCitas2){
+        util.lstCitas1.clear();
+        util.lstCitas1=lstCitas2;
+        ArrayAdapter<Citas> modelo = new ArrayAdapter<Citas>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
                 lstCitas2);
         spCita.setAdapter(modelo);
     }

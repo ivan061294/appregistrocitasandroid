@@ -43,14 +43,20 @@ EditText edtPaciente,edtComentario;
 
 Spinner spTHorario,spTEspecialidad,spMDisponible,spEstado;
 Button btnGuardarC;
-TextView tvEstado,tvPaciente;
-    private static String idhorario,idespecialidad,idmedico;
+TextView tvEstado,tvPaciente,tvTitulo;
+private static String idhorario,idespecialidad,idmedico,estado,citaid;
 
 private static String URL_BASE="https://appcolegiophp.herokuapp.com";
     private static String OBTENER_HORARIO="/obtenerHorario.php";
     private static String OBTENER_ESPECIALIDAD="/obtenerEspecialidad.php";
     private static String OBTENER_MEDICOS="/obtenerMedicos.php?";
     public static String REGSISTRAR_CITA="/registrarCita.php";
+    public static String ACTUALIZAR_CITA="/actualizarCita.php";
+    Citas citaUpdate = new Citas();
+    boolean isCboHorario=false;
+    boolean isCboEstado=false;
+    boolean isCboEspecialidad=false;
+    boolean isCboMedico=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,19 +66,46 @@ private static String URL_BASE="https://appcolegiophp.herokuapp.com";
         //cambio
         inicializar();
         Intent intent=getIntent();
-        String nombreUsuario=util.nombre;
-        Intent intent1=getIntent();
-        String apellidoUsuario=util.apellido;
-        Intent intent2=getIntent();
-        String pacienteId=util.pId;
+        String idCitaCbo = intent.getStringExtra("envIdCbo");
+        Log.i("tags",idCitaCbo!=null?idCitaCbo:"sin idcita XD");
+        //bolleanos para update
+
+
+        //String pacienteId=util.pId;
         spEstado.setEnabled(false);
         tvEstado.setVisibility(View.INVISIBLE);
         spEstado.setVisibility(View.INVISIBLE);
         ActivarSpEstado();
-        tvPaciente.setText("Paciente:  "+nombreUsuario+"  "+apellidoUsuario);
+        tvPaciente.setText("Paciente:  "+util.nombre+"  "+util.apellido);
         obtenerHorarios();
         obtenerEspecialidad();
+        cargarSpinnerEstdo();
 
+        spEstado.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String nameValueCbo=spEstado.getSelectedItem().toString();
+                Log.i("nameValueCboMedico",nameValueCbo);
+                for(ClassCboModel objeto : util.lstEstados){
+                    if (!(objeto.valor.equals("Seleccione")) && objeto.getValor().equals(nameValueCbo)) {
+                        estado=objeto.getValor();
+                    }else
+                    if (!(objeto.valor.equals("Seleccione")) && isCboEstado && objeto.getValor().equalsIgnoreCase(citaUpdate.getEstado())) {
+                        isCboEstado=false;
+                        spEstado.setSelection(util.lstEstados.indexOf(objeto));
+                        spEstado.setEnabled(true);
+                        estado=objeto.getValor();
+                        return;
+                    }
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
         spTHorario.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -86,11 +119,17 @@ private static String URL_BASE="https://appcolegiophp.herokuapp.com";
                     if (!(objeto.valor.equals("Seleccione")) && objeto.valor.equals(nameValueCbo)) {
                         isSelected=true;
                         idhorario= objeto.getId();
+                    }else
+                    if (!(objeto.valor.equals("Seleccione")) && isCboHorario && objeto.getId().equals(citaUpdate.getHorarioId())) {
+                        isCboHorario=false;
+                        spTHorario.setSelection(util.lsthorarios.indexOf(objeto));
+                        isSelected=true;
+                        idhorario= objeto.getId();
                     }
                 }
                 if (isSelected) {
                     spTEspecialidad.setEnabled(true);
-                    String selectEspecialidad=spTEspecialidad.getSelectedItem().toString();
+                    String selectEspecialidad=spTEspecialidad.getSelectedItem()!=null?spTEspecialidad.getSelectedItem().toString():"";
                     if (!(selectEspecialidad.isEmpty()) && !(selectEspecialidad.equals("Seleccione"))) {
                         idespecialidad=obtenerIdEspecialidad(selectEspecialidad);
                         obtenerMedicos(obtenerIdEspecialidad(selectEspecialidad));
@@ -121,6 +160,14 @@ private static String URL_BASE="https://appcolegiophp.herokuapp.com";
                         idespecialidad=objeto.getId();
                         obtenerMedicos(objeto.getId());
                         spMDisponible.setEnabled(true);
+                    }else
+                    if (!(objeto.valor.equals("Seleccione")) && isCboEspecialidad && objeto.getId().equals(citaUpdate.getEspecialidadId())) {
+                        isCboEspecialidad=false;
+                        idespecialidad=objeto.getId();
+                        spTEspecialidad.setSelection(util.lstEspecialidad.indexOf(objeto));
+                        obtenerMedicos(objeto.getId());
+                        spMDisponible.setEnabled(true);
+                        break;
                     }
                 }
             }
@@ -138,6 +185,13 @@ private static String URL_BASE="https://appcolegiophp.herokuapp.com";
                     if (!(objeto.valor.equals("Seleccione")) && objeto.valor.equals(nameValueCbo)) {
 
                         idmedico=objeto.getId();
+                    }else
+                    if (!(objeto.valor.equals("Seleccione")) && isCboMedico && objeto.getId().equals(citaUpdate.getMedicoId())) {
+                        isCboMedico=false;
+                        spMDisponible.setSelection(util.lstMedicos.indexOf(objeto));
+                        spMDisponible.setEnabled(true);
+                        idmedico=objeto.getId();
+                        return;
                     }
 
                 }
@@ -157,13 +211,39 @@ private static String URL_BASE="https://appcolegiophp.herokuapp.com";
                 cita.setMedicoId(idmedico);
                 cita.setObservaciones(edtComentario.getText().toString());
                 cita.setFechaAtencion("2023-01-07");
-                cita.setPacienteId(pacienteId);
-                cita.setUsuarioCreacion(nombreUsuario);
-                Registrarcita(cita);
-                Log.i("citasSave",cita.toString());
+                cita.setPacienteId(util.pId);
+                cita.setUsuarioCreacion(util.nombre);
+                cita.setEstado(estado);
+                if(btnGuardarC.getText().toString().equalsIgnoreCase("Registrar")){
+                    Registrarcita(cita);
+                }
+                if(btnGuardarC.getText().toString().equalsIgnoreCase("Actualizar")){
+                    Actualizarrcita(cita);
+                }
             }
         });
+        setearConponentes(idCitaCbo);
     }
+    public void setearConponentes(String idCitaCbo){
+
+        if (idCitaCbo != null) {
+            for (Citas cita :util.lstCitas1){
+                if (cita.getcIdCbo().equalsIgnoreCase(idCitaCbo)) {
+                    Log.i("cita encontrada!!",cita.toString2());
+                    citaUpdate=cita;
+                    edtComentario.setText(cita.getObservaciones());
+                    isCboEstado=true;
+                    isCboHorario=true;
+                    isCboEspecialidad=true;
+                    isCboMedico=true;
+                    //tvTitulo.setText("Actualizacion de Citas");
+                    btnGuardarC.setText("Actualizar");
+                }
+            }
+
+        }
+    }
+
     public void Registrarcita(Citas cita){
 
         StringRequest stringRequest=new StringRequest(Request.Method.POST, URL_BASE+REGSISTRAR_CITA, new Response.Listener<String>() {
@@ -209,6 +289,54 @@ private static String URL_BASE="https://appcolegiophp.herokuapp.com";
         RequestQueue requestQueue= Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
     }
+    public void Actualizarrcita(Citas cita){
+
+        StringRequest stringRequest=new StringRequest(Request.Method.POST, URL_BASE+ACTUALIZAR_CITA, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    String success = jsonObject.getString("success");
+                    String message = jsonObject.getString("message");
+                    if (success.equals("1")) {
+                        mensajeToast(message);
+                        Intent i = new Intent(NCita_Activity.this,Menu_Activity.class);
+                        startActivity(i);
+                    }
+                } catch (JSONException ex) {
+                    mensajeToast("Error en Registrar");
+                    Log.i("error",ex.toString());
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mensajeToast("Error en Servicio Externo");
+                Log.i("error",error.toString());
+            }
+        })
+        {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> param=new HashMap<>();
+                param.put("Mid",cita.getMedicoId());
+                param.put("Pid",cita.getPacienteId());
+                param.put("Eid",cita.getEspecialidadId());
+                param.put("FechaAtencion",cita.getFechaAtencion());
+                param.put("Hid",cita.getHorarioId());
+                param.put("observaciones",cita.getObservaciones());
+                param.put("usuarioRegistro",cita.getUsuarioCreacion());
+                param.put("Cid",citaUpdate.getcId());
+                param.put("estado",cita.getEstado());
+                return param;
+            }
+        };
+        RequestQueue requestQueue= Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
     public String obtenerIdEspecialidad(String nombreEspecialidad){
         String idEspecialidad="";
         for(ClassCboModel objeto : util.lstEspecialidad){
@@ -241,6 +369,7 @@ private static String URL_BASE="https://appcolegiophp.herokuapp.com";
         spMDisponible=findViewById(R.id.cboMDisponible);
         spTEspecialidad.setEnabled(false);
         spMDisponible.setEnabled(false);
+        //tvTitulo.findViewById(R.id.tvTitulo);
     }
 
     private void obtenerHorarios(){
@@ -387,6 +516,18 @@ private static String URL_BASE="https://appcolegiophp.herokuapp.com";
                 lstModelCbo);
         spTHorario.setAdapter(modelo);
     }
+    public void cargarSpinnerEstdo(){
+        util.lstEstados.clear();
+        ArrayList<ClassCboModel> lstHorario = new ArrayList<ClassCboModel>();
+        lstHorario.add(new ClassCboModel("1","Pendiente"));
+        lstHorario.add(new ClassCboModel("2","Terminado"));
+        lstHorario.add(new ClassCboModel("3","Rechazado"));
+        util.lstEstados=lstHorario;
+        ArrayAdapter<ClassCboModel> modelo = new ArrayAdapter<ClassCboModel>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
+                lstHorario);
+        spEstado.setAdapter(modelo);
+    }
+
 
     }
 

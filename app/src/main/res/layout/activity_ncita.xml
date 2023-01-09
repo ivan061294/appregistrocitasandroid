@@ -11,6 +11,7 @@
         android:background="@color/Celeste"
         tools:ignore="MissingConstraints" >
         <TextView
+            android:id="@+id/tvTitulo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="REGISTRO DE CITAS"
@@ -132,7 +133,7 @@
             android:layout_marginTop="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/tBIngresar"
+            android:text="Registrar"
             android:textColor="@color/black"
             android:backgroundTint="@color/CelestePastel"
             android:layout_marginStart="20mm"/>
