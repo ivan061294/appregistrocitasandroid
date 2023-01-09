@@ -237,7 +237,7 @@ private static String URL_BASE="https://appcolegiophp.herokuapp.com";
                     isCboHorario=true;
                     isCboEspecialidad=true;
                     isCboMedico=true;
-                    //tvTitulo.setText("Actualizacion de Citas");
+                    tvTitulo.setText("Actualizacion de Citas");
                     btnGuardarC.setText("Actualizar");
                 }
             }
@@ -370,7 +370,7 @@ private static String URL_BASE="https://appcolegiophp.herokuapp.com";
         spMDisponible=findViewById(R.id.cboMDisponible);
         spTEspecialidad.setEnabled(false);
         spMDisponible.setEnabled(false);
-        //tvTitulo.findViewById(R.id.tvTitulo);
+        tvTitulo=findViewById(R.id.tvTitulo);
     }
 
     private void obtenerHorarios(){
