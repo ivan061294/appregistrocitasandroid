@@ -68,9 +68,11 @@ public static String URL_LOGIN="https://appcolegiophp.herokuapp.com/login.php";
                         util.nombre=Nombres;
                         util.apellido=Apellidos;
                         util.pId=Pid;
+                        util.sesion=true;
                         i.putExtra("Nombres",Nombres);
                         i.putExtra("Apellidos",Apellidos);
                         i.putExtra("Pid",Pid);
+                        i.putExtra("login",util.sesion);
                         startActivity(i);
                     } else {
                         Toast.makeText(MainActivity.this, Message, Toast.LENGTH_SHORT).show();
@@ -104,5 +106,4 @@ public static String URL_LOGIN="https://appcolegiophp.herokuapp.com/login.php";
         edtUsuario=findViewById(R.id.txtUsuarioDNI);
         edtPassword=findViewById(R.id.txtLContrasena);
     }
-
 }
