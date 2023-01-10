@@ -59,7 +59,7 @@ private static String URL_BASE="https://appcolegiophp.herokuapp.com";
     boolean isCboMedico=false;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected  void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ncita);
         //hola test cambio
@@ -85,7 +85,7 @@ private static String URL_BASE="https://appcolegiophp.herokuapp.com";
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String nameValueCbo=spEstado.getSelectedItem().toString();
-                Log.i("nameValueCboMedico",nameValueCbo);
+                Log.i("nameValueCboEstados",nameValueCbo);
                 for(ClassCboModel objeto : util.lstEstados){
                     if (!(objeto.valor.equals("Seleccione")) && objeto.getValor().equals(nameValueCbo)) {
                         estado=objeto.getValor();
@@ -123,18 +123,27 @@ private static String URL_BASE="https://appcolegiophp.herokuapp.com";
                     if (!(objeto.valor.equals("Seleccione")) && isCboHorario && objeto.getId().equals(citaUpdate.getHorarioId())) {
                         isCboHorario=false;
                         spTHorario.setSelection(util.lsthorarios.indexOf(objeto));
-                        isSelected=true;
                         idhorario= objeto.getId();
+                        return;
                     }
                 }
                 if (isSelected) {
                     spTEspecialidad.setEnabled(true);
                     String selectEspecialidad=spTEspecialidad.getSelectedItem()!=null?spTEspecialidad.getSelectedItem().toString():"";
-                    if (!(selectEspecialidad.isEmpty()) && !(selectEspecialidad.equals("Seleccione"))) {
-                        idespecialidad=obtenerIdEspecialidad(selectEspecialidad);
-                        obtenerMedicos(obtenerIdEspecialidad(selectEspecialidad));
-                        spMDisponible.setEnabled(true);
+                    if (!(selectEspecialidad.isEmpty()) && !isCboHorario && !(selectEspecialidad.equals("Seleccione"))) {
+
+                        for(ClassCboModel objeto : util.lstEspecialidad){
+
+                            if (!(objeto.valor.equals("Seleccione")) && objeto.getValor().equals(selectEspecialidad)) {
+
+                                idespecialidad=objeto.getId();
+                                spTEspecialidad.setSelection(util.lstEspecialidad.indexOf(objeto));
+                                isCboMedico=true;
+                                return;
+                            }
+                        }
                     }
+
                 }else{
                     idespecialidad="";
                     spTEspecialidad.setEnabled(false);
@@ -165,9 +174,10 @@ private static String URL_BASE="https://appcolegiophp.herokuapp.com";
                         isCboEspecialidad=false;
                         idespecialidad=objeto.getId();
                         spTEspecialidad.setSelection(util.lstEspecialidad.indexOf(objeto));
-                        obtenerMedicos(objeto.getId());
-                        spMDisponible.setEnabled(true);
-                        break;
+                        isCboMedico=true;
+                        //obtenerMedicos(objeto.getId());
+                        //spMDisponible.setEnabled(true);
+                       return;
                     }
                 }
             }
@@ -182,14 +192,16 @@ private static String URL_BASE="https://appcolegiophp.herokuapp.com";
                 String nameValueCbo=spMDisponible.getSelectedItem().toString();
                 Log.i("nameValueCboMedico",nameValueCbo);
                 for(ClassCboModel objeto : util.lstMedicos){
-                    if (!(objeto.valor.equals("Seleccione")) && objeto.valor.equals(nameValueCbo)) {
+                    if (!(objeto.valor.equalsIgnoreCase("Seleccione")) && objeto.valor.equals(nameValueCbo)) {
 
                         idmedico=objeto.getId();
                     }else
-                    if (!(objeto.valor.equals("Seleccione")) && isCboMedico && objeto.getId().equals(citaUpdate.getMedicoId())) {
+                    if (!(objeto.valor.equalsIgnoreCase("Seleccione")) && isCboMedico && objeto.getId().equalsIgnoreCase(citaUpdate.getMedicoId())) {
+                        Log.i("medico encontrado",objeto.toString());
                         isCboMedico=false;
-                        spMDisponible.setSelection(util.lstMedicos.indexOf(objeto));
                         spMDisponible.setEnabled(true);
+                        spMDisponible.setSelection(util.lstMedicos.indexOf(objeto));
+
                         idmedico=objeto.getId();
                         return;
                     }
@@ -236,7 +248,7 @@ private static String URL_BASE="https://appcolegiophp.herokuapp.com";
                     isCboEstado=true;
                     isCboHorario=true;
                     isCboEspecialidad=true;
-                    isCboMedico=true;
+
                     tvTitulo.setText("Actualizacion de Citas");
                     btnGuardarC.setText("Actualizar");
                 }
