@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -34,6 +35,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import Entidades.Citas;
 import Entidades.ClassCboModel;
@@ -42,7 +44,6 @@ import Entidades.util;
 
 public class NCita_Activity extends AppCompatActivity {
 EditText edtPaciente,edtComentario,edtFAtencionN;
-
 Spinner spTHorario,spTEspecialidad,spMDisponible,spEstado;
 Button btnGuardarC,btnSalir;
 TextView tvEstado,tvPaciente,tvTitulo;
@@ -62,8 +63,10 @@ private static String URL_BASE="https://appcolegiophp.herokuapp.com";
 
     @Override
     protected  void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ncita);
+        Log.i("testncitaucita","panda vago");
         //hola test cambio
         //cambio
         inicializar();
@@ -75,10 +78,15 @@ private static String URL_BASE="https://appcolegiophp.herokuapp.com";
             @Override
             public void onClick(View view) {
                 SharedPreferences preferences=getSharedPreferences("preferenciasLogin", Context.MODE_PRIVATE);
-                preferences.edit().clear().commit();
+                preferences.edit().clear().apply();
                 Intent i=new Intent(NCita_Activity.this,MainActivity.class);
                 startActivity(i);
-                finish();
+
+               /* SharedPreferences preferences2 = PreferenceManager.getDefaultSharedPreferences(NCita_Activity.this);
+                SharedPreferences.Editor editor = preferences2.edit();
+                editor.remove("preferenciasLogin");
+                editor.apply();
+                finish();*/
             }
         });
 

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_inicio">
+
+    <fragment
+        android:id="@+id/nav_inicio"
+        android:name="com.alexandertutoriales.cliente.e_commerceapp.activity.ui.inicio.InicioFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_inicio" />
+
+    <fragment
+        android:id="@+id/nav_mis_compras"
+        android:name="com.alexandertutoriales.cliente.e_commerceapp.activity.ui.compras.MisComprasFragment"
+        android:label="@string/menu_gallery"
+        tools:layout="@layout/fragment_mis_compras" />
+
+    <fragment
+        android:id="@+id/nav_configuracion"
+        android:name="com.alexandertutoriales.cliente.e_commerceapp.activity.ui.configuracion.ConfiguracionFragment"
+        android:label="@string/menu_slideshow"
+        tools:layout="@layout/fragment_configuracion" />
+</navigation>

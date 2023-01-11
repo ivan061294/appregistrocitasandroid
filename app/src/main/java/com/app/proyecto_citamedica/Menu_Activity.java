@@ -17,6 +17,7 @@ public class Menu_Activity extends AppCompatActivity {
 Button btnNCita,btnVerC,btnQuienesSomos,btnSalir;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i("menuactivity","panda vago");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
         inicializar();

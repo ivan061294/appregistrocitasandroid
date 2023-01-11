@@ -1,108 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".MainActivity">
+<LinearLayout
+    android:id="@+id/linearParte1"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
-    <LinearLayout
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:background="@color/Celeste"
-        tools:ignore="MissingConstraints">
-    </LinearLayout>
-    <LinearLayout
+        android:layout_height="273dp"
+        android:background="@drawable/blue_bg">
+
+        <ImageView
+            android:layout_width="300dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="55dp"
+            android:src="@drawable/citamedicalogo" />
+    </FrameLayout>
+</LinearLayout>
+<LinearLayout
+    android:orientation="horizontal"
+    android:id="@+id/linearParte2"
+    android:layout_below="@+id/linearParte1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/BlancoPerla"
-        android:layout_marginTop="20mm"
-        tools:ignore="MissingConstraints">
-        <TextView
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/san_francisco"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:gravity="center|center_horizontal"
+        android:text="@string/label_bienvenida"/>
+</LinearLayout>
+
+<LinearLayout
+    android:id="@+id/linearParte3"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/linearParte2"
+    android:layout_marginTop="10dp"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txtInputUsuario"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/label_usuario"
+        app:startIconDrawable="@drawable/ic_user">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtMail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Ingrese su Usuario"
-            android:textAlignment="center"
-            android:layout_marginTop="5mm"
-            android:textSize="30dp"
-            android:textColor="@color/design_default_color_secondary"
-            android:textStyle="bold"/>
+            android:fontFamily="@font/poppins_medium"
+            android:inputType="textEmailAddress"
+            android:textSize="15sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txtInputPassword"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/label_password"
+        app:startIconDrawable="@drawable/ic_lock">
 
-        <EditText
-            android:id="@+id/txtUsuarioDNI"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10sp"
-            android:ems="10"
-            android:hint="Ingrese su Usuario(DNI)"
-            android:inputType="number"
-            android:textAlignment="center"
-            android:textColorHint="@color/CelestePastel"
-            android:textSize="20dp" />
+            android:fontFamily="@font/poppins_medium"
+            android:inputType="textPassword"
+            android:textSize="15sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+</LinearLayout>
+<LinearLayout
+    android:id="@+id/linearParte4"
+    android:layout_below="@+id/linearParte3"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="end"
+    android:layout_marginTop="10dp"
+    android:layout_marginEnd="10dp">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/tContrasena"
-            android:textAlignment="center"
-            android:textSize="30dp"
-            android:layout_marginTop="10sp"
-            android:textColor="@color/design_default_color_secondary"
-            android:textStyle="bold" />
+    <Button
+        android:id="@+id/btnIniciarSesion"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:text="@string/label_start_session"
+        android:drawableTint="#fff"
+        android:drawableEnd="@drawable/ic_login"/>
+</LinearLayout>
+<LinearLayout
+    android:orientation="horizontal"
+    android:id="@+id/linearParte5"
+    android:layout_below="@+id/linearParte4"
+    android:layout_width="match_parent"
+    android:layout_marginTop="10dp"
+    android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/txtLContrasena"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:hint="Ingrese su Contraseña"
-            android:textColorHint="@color/CelestePastel"
-            android:ems="10"
-            android:layout_marginTop="10sp"
-            android:textSize="20dp"
-            android:inputType="textPassword" />
+    <TextView
+        android:id="@+id/txtNuevoUsuario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/san_francisco"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/purple_500"
+        android:gravity="center|center_horizontal"
+        android:text="@string/label_nuevoUser"/>
+</LinearLayout>
+<LinearLayout
+    android:orientation="horizontal"
+    android:layout_below="@+id/linearParte5"
+    android:layout_width="match_parent"
+    android:layout_marginTop="10dp"
+    android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/btnIngresar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/tBIngresar"
-            android:layout_marginTop="10sp"
-            android:layout_marginLeft="80dp"
-            android:textAlignment="center"
-            android:textSize="35dp"
-            android:backgroundTint="@color/Celeste"
-            android:textColor="@color/BlancoPerla"
-            android:textStyle="bold"/>
-        <HorizontalScrollView
-            android:layout_width="50mm"
-            android:layout_height="0.8mm"
-            android:layout_marginStart="30dp"
-            android:background="@color/CelestePastel"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="¿No tienes Cuenta?"
-                android:textStyle="italic"
-                android:textColor="@color/CelestePastel"
-                android:textSize="18dp"
-                android:textAlignment="center"/>
-            <Button
-                android:id="@+id/btnAgregarUsuario"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:text="Crear Usuario"
-                android:backgroundTint="@color/BlancoPerla"
-                android:textStyle="italic"
-                android:textColor="@color/Celeste"/>
-        </LinearLayout>
+    <TextView
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/san_francisco"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:gravity="center|center_horizontal"
+        android:text="@string/label_olvide_password"/>
 
-    </LinearLayout>
+</LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>
