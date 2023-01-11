@@ -246,12 +246,13 @@
                                     android:hint="Fecha Atencion"
                                     app:startIconDrawable="@drawable/ic_baseline_calendar_today_24">
 
-                                    <com.google.android.material.textfield.TextInputEditText
+                                    <AutoCompleteTextView
                                         android:id="@+id/txtFAtencionN"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
+                                        android:clickable="true"
                                         android:fontFamily="@font/san_francisco"
-                                        android:inputType="number"
+                                        android:inputType="none"
                                         android:textSize="15sp" />
                                     <com.google.android.material.button.MaterialButton
                                         android:id="@+id/btnGuardarC"

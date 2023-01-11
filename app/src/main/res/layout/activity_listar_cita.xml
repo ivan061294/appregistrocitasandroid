@@ -83,7 +83,7 @@
                                 android:hint="Paciente"
                                 app:startIconDrawable="@drawable/ic_baseline_account_circle_24">
                                 <com.google.android.material.textfield.TextInputEditText
-                                    android:id="@+id/tvPacienteL"
+                                    android:id="@+id/txtPacienteL"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/san_francisco"
@@ -164,7 +164,7 @@
                                 android:orientation="horizontal">
 
                                 <com.google.android.material.textfield.TextInputLayout
-                                    android:id="@+id/txtInputApellidoPaternoU"
+                                    android:id="@+id/txtInputTipoHorarioL"
                                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
