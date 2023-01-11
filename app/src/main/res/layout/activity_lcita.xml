@@ -11,13 +11,20 @@
         android:background="@color/Celeste"
         tools:ignore="MissingConstraints" >
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="365dp"
             android:layout_height="match_parent"
             android:text=" CITAS "
             android:textAlignment="center"
             android:textSize="25dp"
             android:textColor="@color/BlancoPerla"
             android:textStyle="bold"/>
+        <Button
+            android:id="@+id/btnSalir"
+            android:text="X"
+            android:textAlignment="center"
+            android:textSize="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
     </LinearLayout>
     <LinearLayout
         android:layout_margin="30dp"

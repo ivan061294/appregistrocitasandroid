@@ -12,13 +12,20 @@
         tools:ignore="MissingConstraints" >
         <TextView
             android:id="@+id/tvTitulo"
-            android:layout_width="match_parent"
+            android:layout_width="365dp"
             android:layout_height="match_parent"
             android:text="REGISTRO DE CITAS"
             android:textAlignment="center"
             android:textSize="25dp"
             android:textColor="@color/BlancoPerla"
             android:textStyle="bold"/>
+        <Button
+        android:id="@+id/btnSalir"
+        android:text="X"
+        android:textAlignment="center"
+        android:textSize="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
     </LinearLayout>
 
     <LinearLayout

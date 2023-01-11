@@ -3,7 +3,9 @@ package com.app.proyecto_citamedica;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -42,7 +44,7 @@ public class NCita_Activity extends AppCompatActivity {
 EditText edtPaciente,edtComentario,edtFAtencionN;
 
 Spinner spTHorario,spTEspecialidad,spMDisponible,spEstado;
-Button btnGuardarC;
+Button btnGuardarC,btnSalir;
 TextView tvEstado,tvPaciente,tvTitulo;
 private static String idhorario,idespecialidad,idmedico,estado,citaid;
 
@@ -69,7 +71,16 @@ private static String URL_BASE="https://appcolegiophp.herokuapp.com";
         String idCitaCbo = intent.getStringExtra("envIdCbo");
         Log.i("tags",idCitaCbo!=null?idCitaCbo:"sin idcita XD");
         //bolleanos para update
-
+        btnSalir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences preferences=getSharedPreferences("preferenciasLogin", Context.MODE_PRIVATE);
+                preferences.edit().clear().commit();
+                Intent i=new Intent(NCita_Activity.this,MainActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
 
         //String pacienteId=util.pId;
         spEstado.setEnabled(false);
@@ -383,6 +394,7 @@ private static String URL_BASE="https://appcolegiophp.herokuapp.com";
         spTEspecialidad.setEnabled(false);
         spMDisponible.setEnabled(false);
         tvTitulo=findViewById(R.id.tvTitulo);
+        btnSalir=findViewById(R.id.btnSalir);
     }
 
     private void obtenerHorarios(){

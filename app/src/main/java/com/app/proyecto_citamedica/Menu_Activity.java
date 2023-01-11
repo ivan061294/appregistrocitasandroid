@@ -2,7 +2,9 @@ package com.app.proyecto_citamedica;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -32,9 +34,9 @@ Button btnNCita,btnVerC,btnQuienesSomos,btnSalir;
             public void onClick(View view) {
                 Intent i=new Intent(Menu_Activity.this,LCita_Activity.class);
                 //checkar kelvin
-                i.putExtra("Nombres",Nombre);
+                /*i.putExtra("Nombres",Nombre);
                 i.putExtra("Apellidos",Apellido);
-                i.putExtra("Pid",Pid);
+                i.putExtra("Pid",Pid);*/
                 startActivity(i);
             }
         });
@@ -42,10 +44,10 @@ Button btnNCita,btnVerC,btnQuienesSomos,btnSalir;
             @Override
             public void onClick(View view) {
                 Intent i=new Intent(Menu_Activity.this,NCita_Activity.class);
-                i.putExtra("Nombres",Nombre);
+                /*i.putExtra("Nombres",Nombre);
                 i.putExtra("Apellidos",Apellido);
                 i.putExtra("Pid",Pid);
-                startActivity(i);
+                */startActivity(i);
             }
         });
         btnQuienesSomos.setOnClickListener(new View.OnClickListener() {
@@ -53,6 +55,16 @@ Button btnNCita,btnVerC,btnQuienesSomos,btnSalir;
             public void onClick(View view) {
                 Intent i=new Intent(Menu_Activity.this,QuienesS_Activity.class);
                 startActivity(i);
+            }
+        });
+        btnSalir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences preferences=getSharedPreferences("preferenciasLogin", Context.MODE_PRIVATE);
+                preferences.edit().clear().commit();
+                Intent i=new Intent(Menu_Activity.this,MainActivity.class);
+                startActivity(i);
+                finish();
             }
         });
     }

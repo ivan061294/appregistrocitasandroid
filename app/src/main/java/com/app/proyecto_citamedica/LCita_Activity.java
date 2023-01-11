@@ -3,7 +3,9 @@ package com.app.proyecto_citamedica;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -36,7 +38,7 @@ import Entidades.ClassCboModel;
 import Entidades.util;
 
 public class LCita_Activity extends AppCompatActivity {
-Button btnECita;
+Button btnECita,btnSalir;
 public static String URL_LCitas="https://appcolegiophp.herokuapp.com/obtenercitaIdPaciente.php?";
     public static String URL_BCitas="https://appcolegiophp.herokuapp.com/obtenerCitaId.php?";
 EditText edtTHorario, edtEspecialidad,edtMDisponible,edtFAtencion;
@@ -60,6 +62,16 @@ public static String cid="";
         tvPacienteL.setText("Paciente : "+Nombre+"  "+Apellido);
         obtenerCitas(Integer.parseInt(Pid));
 
+        btnSalir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences preferences=getSharedPreferences("preferenciasLogin", Context.MODE_PRIVATE);
+                preferences.edit().clear().commit();
+                Intent i=new Intent(LCita_Activity.this,MainActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
         btnECita.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -169,5 +181,6 @@ public static String cid="";
         edtMDisponible=findViewById(R.id.txtMDisponible);
         edtFAtencion=findViewById(R.id.txtFAtencion);
         spCita=findViewById(R.id.cboCita);
+        btnSalir=findViewById(R.id.btnSalir);
     }
 }
