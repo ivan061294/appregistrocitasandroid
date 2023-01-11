@@ -102,8 +102,10 @@
                                 <com.google.android.material.textfield.TextInputLayout
                                     android:id="@+id/txtInputNameUser"
                                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                                    android:layout_width="match_parent"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
+                                    android:layout_marginEnd="10dp"
+                                    android:layout_weight="1"
                                     android:hint="Ingrese sus nombres"
                                     app:startIconDrawable="@drawable/ic_person">
 
@@ -139,11 +141,20 @@
                                         android:textSize="15sp" />
                                 </com.google.android.material.textfield.TextInputLayout>
 
+                             </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+
                                 <com.google.android.material.textfield.TextInputLayout
                                     android:id="@+id/txtInputApellidoMaternoU"
                                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
+                                    android:layout_marginEnd="10dp"
                                     android:layout_weight="1"
                                     android:hint="Apellido Materno"
                                     app:startIconDrawable="@drawable/ic_person">
@@ -155,6 +166,58 @@
                                         android:fontFamily="@font/san_francisco"
                                         android:textSize="15sp" />
                                 </com.google.android.material.textfield.TextInputLayout>
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:id="@+id/txtInputFecha"
+                                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="10dp"
+                                    android:layout_weight="1"
+                                    android:hint="Fecha de Nacimiento"
+                                    app:startIconDrawable="@drawable/ic_baseline_calendar_month_24">
+
+                                    <AutoCompleteTextView
+                                        android:id="@+id/edtFecha"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:clickable="true"
+                                        android:fontFamily="@font/san_francisco"
+                                        android:inputType="none"
+                                        android:textSize="15sp" />
+                                </com.google.android.material.textfield.TextInputLayout>
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:id="@+id/txtInputSexo"
+                                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="10dp"
+                                    android:layout_weight="1"
+                                    android:hint="Sexo"
+                                    app:startIconDrawable="@drawable/ic_baseline_transgender_24">
+
+                                    <AutoCompleteTextView
+                                        android:id="@+id/dropdownSexo"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:clickable="true"
+                                        android:fontFamily="@font/san_francisco"
+                                        android:inputType="none"
+                                        android:textSize="15sp" />
+                                </com.google.android.material.textfield.TextInputLayout>
+
                             </LinearLayout>
 
                             <LinearLayout
@@ -182,11 +245,18 @@
                                         android:textSize="15sp" />
                                 </com.google.android.material.textfield.TextInputLayout>
 
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
                                 <com.google.android.material.textfield.TextInputLayout
                                     android:id="@+id/txtInputNumeroDocU"
                                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
+                                    android:layout_marginEnd="10dp"
                                     android:layout_weight="1"
                                     android:hint="Num. Identificación"
                                     app:startIconDrawable="@drawable/ic_documento">
@@ -201,81 +271,18 @@
                                 </com.google.android.material.textfield.TextInputLayout>
                             </LinearLayout>
 
-                           <!-- <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <com.google.android.material.textfield.TextInputLayout
-                                    android:id="@+id/txtInputDepartamento"
-                                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginEnd="10dp"
-                                    android:layout_weight="1"
-                                    android:hint="Departamento"
-                                    app:startIconDrawable="@drawable/ic_ubicacion">
-
-                                    <AutoCompleteTextView
-                                        android:id="@+id/dropdownDepartamento"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:clickable="true"
-                                        android:fontFamily="@font/san_francisco"
-                                        android:inputType="none"
-                                        android:textSize="15sp" />
-                                </com.google.android.material.textfield.TextInputLayout>
-
-                                <com.google.android.material.textfield.TextInputLayout
-                                    android:id="@+id/txtInputProvincia"
-                                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:hint="Provincia"
-                                    app:startIconDrawable="@drawable/ic_ubicacion">
-
-                                    <AutoCompleteTextView
-                                        android:id="@+id/dropdownProvincia"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:clickable="true"
-                                        android:fontFamily="@font/san_francisco"
-                                        android:inputType="none"
-                                        android:textSize="15sp" />
-                                </com.google.android.material.textfield.TextInputLayout>
-                            </LinearLayout>
-
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal">
 
-                                <com.google.android.material.textfield.TextInputLayout
-                                    android:id="@+id/txtInputDistrito"
-                                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginEnd="10dp"
-                                    android:layout_weight="1"
-                                    android:hint="Distrito"
-                                    app:startIconDrawable="@drawable/ic_ubicacion">
-
-                                    <AutoCompleteTextView
-                                        android:id="@+id/dropdownDistrito"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:clickable="true"
-                                        android:fontFamily="@font/san_francisco"
-                                        android:inputType="none"
-                                        android:textSize="15sp" />
-                                </com.google.android.material.textfield.TextInputLayout>
 
                                 <com.google.android.material.textfield.TextInputLayout
                                     android:id="@+id/txtInputTelefonoU"
                                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
+                                    android:layout_marginEnd="10dp"
                                     android:layout_weight="1"
                                     android:hint="Teléfono"
                                     app:startIconDrawable="@drawable/ic_phone">
@@ -288,18 +295,20 @@
                                         android:inputType="number"
                                         android:textSize="15sp" />
                                 </com.google.android.material.textfield.TextInputLayout>
-                            </LinearLayout>-->
+                            </LinearLayout>
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:orientation="vertical">
+                                android:orientation="horizontal">
 
                                 <com.google.android.material.textfield.TextInputLayout
                                     android:id="@+id/txtInputDireccionU"
                                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                                    android:layout_width="match_parent"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
+                                    android:layout_marginEnd="10dp"
+                                    android:layout_weight="1"
                                     android:hint="Dirección"
                                     app:startIconDrawable="@drawable/ic_person_direccion">
 
@@ -373,7 +382,7 @@
                                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:hint="Ingrese su correo electrónico"
+                                    android:hint="Num de Documento "
                                     app:startIconDrawable="@drawable/ic_user">
 
                                     <com.google.android.material.textfield.TextInputEditText

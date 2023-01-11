@@ -31,25 +31,30 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TimeZone;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class RegistrarUsuariosActivity extends AppCompatActivity {
 
     private Button btnSubirImagen, btnGuardarDatos;
-    private AutoCompleteTextView dropdownTipoDoc, dropdownDepartamento, dropdownProvincia, dropdownDistrito;
+    private AutoCompleteTextView dropdownTipoDoc, dropdownSexo, dropdownDistrito;
     private EditText edtNameUser, edtApellidoPaternoU, edtApellidoMaternoU, edtNumDocU, edtTelefonoU,
-            edtDireccionU, edtPasswordUser, edtEmailUser;
+            edtDireccionU, edtPasswordUser, edtEmailUser,edtFecha;
     private TextInputLayout txtInputNameUser, txtInputApellidoPaternoU, txtInputApellidoMaternoU,
-            txtInputTipoDoc, txtInputNumeroDocU, txtInputDepartamento, txtInputProvincia,
+            txtInputTipoDoc, txtInputNumeroDocU, txtInputFecha, txtInputProvincia,txtInputSexo,
             txtInputDistrito, txtInputTelefonoU, txtInputDireccionU, txtInputEmailUser, txtInputPasswordUser;
     private final static int LOCATION_REQUEST_CODE = 23;
     public static String URL_Registro_Paciente="https://appcolegiophp.herokuapp.com/registrar.php";
@@ -58,26 +63,17 @@ public class RegistrarUsuariosActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registrar_usuarios);
         this.init();
-        //this.spinners();
+        this.spinners();
     }
     private void spinners() {
         //LISTA DE TIPOS DE DOCUMENTOS
         String[] tipoDoc = getResources().getStringArray(R.array.tipoDoc);
         ArrayAdapter arrayTipoDoc = new ArrayAdapter(this, R.layout.dropdown_item, tipoDoc);
         dropdownTipoDoc.setAdapter(arrayTipoDoc);
-        //LISTA DE DEPARTAMENTOS
-        String[] departamentos = getResources().getStringArray(R.array.departamentos);
-        ArrayAdapter arrayDepartamentos = new ArrayAdapter(this, R.layout.dropdown_item, departamentos);
-        dropdownDepartamento.setAdapter(arrayDepartamentos);
-        //LISTA DE PROVINCIAS
-        String[] provincias = getResources().getStringArray(R.array.provincias);
-        ArrayAdapter arrayProvincias = new ArrayAdapter(this, R.layout.dropdown_item, provincias);
-        dropdownProvincia.setAdapter(arrayProvincias);
-        //LISTA DE DISTRITOS
-        String[] distritos = getResources().getStringArray(R.array.distritos);
-        ArrayAdapter arrayDistritos = new ArrayAdapter(this, R.layout.dropdown_item, distritos);
-        dropdownDistrito.setAdapter(arrayDistritos);
-
+        //LISTA DE SEXO
+        String[] tipoSexo = getResources().getStringArray(R.array.tipoSexo);
+        ArrayAdapter arrayTipoSexo = new ArrayAdapter(this, R.layout.dropdown_item, tipoSexo);
+        dropdownSexo.setAdapter(arrayTipoSexo);
     }
    /* @Override
     protected void onStart() {
@@ -116,10 +112,11 @@ public class RegistrarUsuariosActivity extends AppCompatActivity {
         edtDireccionU = findViewById(R.id.edtDireccionU);
         edtPasswordUser = findViewById(R.id.edtPasswordUser);
         edtEmailUser = findViewById(R.id.edtEmailUser);
+        edtEmailUser.setEnabled(false);
         //AutoCompleteTextView
-        //dropdownTipoDoc = findViewById(R.id.dropdownTipoDoc);
-        //dropdownDepartamento = findViewById(R.id.dropdownDepartamento);
-        //dropdownProvincia = findViewById(R.id.dropdownProvincia);
+        dropdownTipoDoc = findViewById(R.id.dropdownTipoDoc);
+        edtFecha = findViewById(R.id.edtFecha);
+        dropdownSexo = findViewById(R.id.dropdownSexo);
         //dropdownDistrito = findViewById(R.id.dropdownDistrito);
         //TextInputLayout
         txtInputNameUser = findViewById(R.id.txtInputNameUser);
@@ -127,16 +124,35 @@ public class RegistrarUsuariosActivity extends AppCompatActivity {
         txtInputApellidoMaternoU = findViewById(R.id.txtInputApellidoMaternoU);
         txtInputTipoDoc = findViewById(R.id.txtInputTipoDoc);
         txtInputNumeroDocU = findViewById(R.id.txtInputNumeroDocU);
-        txtInputDepartamento = findViewById(R.id.txtInputDepartamento);
+        txtInputFecha = findViewById(R.id.txtInputFecha);
         txtInputProvincia = findViewById(R.id.txtInputProvincia);
         txtInputDistrito = findViewById(R.id.txtInputDistrito);
-        //txtInputTelefonoU = findViewById(R.id.txtInputTelefonoU);
+        txtInputTelefonoU = findViewById(R.id.txtInputTelefonoU);
         txtInputDireccionU = findViewById(R.id.txtInputDireccionU);
         txtInputEmailUser = findViewById(R.id.txtInputEmailUser);
         txtInputPasswordUser = findViewById(R.id.txtInputPasswordUser);
+        txtInputSexo = findViewById(R.id.txtInputSexo);
 
         btnGuardarDatos.setOnClickListener(v -> {
             this.guardarDatos();
+        });
+        MaterialDatePicker datePicker = MaterialDatePicker.Builder.datePicker().
+                setTitleText("Seleccione Fecha").setSelection(MaterialDatePicker.todayInUtcMilliseconds()).build();
+        edtFecha.setOnClickListener(v->{
+            datePicker.show(getSupportFragmentManager(),"Material_Date_picker");
+            datePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
+                @Override
+                public void onPositiveButtonClick(Long selection) {
+                    Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+                    calendar.setTimeInMillis(selection);
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                    String formattedDate  = format.format(calendar.getTime());
+                    edtFecha.setText(formattedDate);
+
+                  //edtFecha.setText(String.format(datePicker.getHeaderText(), "yyyy-mm-dd"));
+                }
+            });
+
         });
         ///ONCHANGE LISTENEER A LOS EDITEXT
         edtNameUser.addTextChangedListener(new TextWatcher() {
@@ -196,6 +212,7 @@ public class RegistrarUsuariosActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 txtInputNumeroDocU.setErrorEnabled(false);
+                edtEmailUser.setText(edtNumDocU.getText().toString());
             }
 
             @Override
@@ -203,7 +220,7 @@ public class RegistrarUsuariosActivity extends AppCompatActivity {
 
             }
         });
-        /*edtTelefonoU.addTextChangedListener(new TextWatcher() {
+        edtTelefonoU.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -218,7 +235,7 @@ public class RegistrarUsuariosActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
 
             }
-        });*/
+        });
         edtDireccionU.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -235,7 +252,7 @@ public class RegistrarUsuariosActivity extends AppCompatActivity {
 
             }
         });
-        /*dropdownTipoDoc.addTextChangedListener(new TextWatcher() {
+        dropdownSexo.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -243,7 +260,7 @@ public class RegistrarUsuariosActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                txtInputTipoDoc.setErrorEnabled(false);
+                txtInputSexo.setErrorEnabled(false);
             }
 
             @Override
@@ -251,6 +268,7 @@ public class RegistrarUsuariosActivity extends AppCompatActivity {
 
             }
         });
+        /*
         dropdownDepartamento.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -340,8 +358,8 @@ public class RegistrarUsuariosActivity extends AppCompatActivity {
                 param.put("contrasena",edtPasswordUser.getText().toString());
                 param.put("telefono",edtTelefonoU.getText().toString());
                 param.put("dni",edtNumDocU.getText().toString());
-                //param.put("sexo",spSexo.getSelectedItem().toString());
-               // param.put("fechaNacimiento",edtFNacimiento.getText().toString());
+                param.put("sexo",dropdownSexo.getText().toString());
+                param.put("fechaNacimiento",edtFecha.getText().toString());
                 return param;
             }
         };
@@ -351,25 +369,36 @@ public class RegistrarUsuariosActivity extends AppCompatActivity {
 
     private void guardarDatos(){
         if (validar()) {
-
+            RegistrarP();
         } else {
             errorMessage("Por favor, complete todos los campos del formulario");
         }
     }
     private boolean validar() {
         boolean retorno = true;
-        String nombres, apellidoPaterno, apellidoMaterno, numDoc, telefono, direccion, correo, clave,
-                dropTipoDoc, dropDepartamento, dropProvincia, dropDistrito;
+        String nombres, apellidoPaterno, apellidoMaterno, numDoc, telefono, direccion,  clave,
+                fecha, sexo, tipoidentificacion, dropDistrito;
         nombres = edtNameUser.getText().toString();
         apellidoPaterno = edtApellidoPaternoU.getText().toString();
         apellidoMaterno = edtApellidoMaternoU.getText().toString();
         numDoc = edtNumDocU.getText().toString();
-        //telefono = edtTelefonoU.getText().toString();
+        telefono = edtTelefonoU.getText().toString();
         direccion = edtDireccionU.getText().toString();
-        correo = edtEmailUser.getText().toString();
         clave = edtPasswordUser.getText().toString();
+        fecha=edtFecha.getText().toString();
+        sexo=dropdownSexo.getText().toString();
 
-
+        if (fecha.isEmpty()) {
+            txtInputFecha.setError("Ingresar Fecha de Nacimiento");
+            retorno = false;
+        } else {
+            txtInputFecha.setErrorEnabled(false);
+        }if (sexo.isEmpty()) {
+            txtInputSexo.setError("Ingresar Sexo");
+            retorno = false;
+        } else {
+            txtInputSexo.setErrorEnabled(false);
+        }
         if (nombres.isEmpty()) {
             txtInputNameUser.setError("Ingresar nombres");
             retorno = false;
@@ -381,6 +410,12 @@ public class RegistrarUsuariosActivity extends AppCompatActivity {
             retorno = false;
         } else {
             txtInputApellidoPaternoU.setErrorEnabled(false);
+        }
+        if (telefono.isEmpty()) {
+            txtInputTelefonoU.setError("Ingresar telefono");
+            retorno = false;
+        } else {
+            txtInputTelefonoU.setErrorEnabled(false);
         }
         if (apellidoMaterno.isEmpty()) {
             txtInputApellidoMaternoU.setError("Ingresar apellido materno");
@@ -399,12 +434,6 @@ public class RegistrarUsuariosActivity extends AppCompatActivity {
             retorno = false;
         } else {
             txtInputDireccionU.setErrorEnabled(false);
-        }
-        if (correo.isEmpty()) {
-            txtInputEmailUser.setError("Ingresar correo electrónico");
-            retorno = false;
-        } else {
-            txtInputEmailUser.setErrorEnabled(false);
         }
         if (clave.isEmpty()) {
             txtInputPasswordUser.setError("Ingresar clave para el inicio de sesión");

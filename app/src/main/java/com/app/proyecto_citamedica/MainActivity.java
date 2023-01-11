@@ -228,10 +228,10 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, Message, Toast.LENGTH_SHORT).show();
                         Log.i("response-1", "ID - " + response.toString()+Nombres.toString()+Apellidos.toString()+Pid.toString());
                         Intent i = new Intent(MainActivity.this, Menu_Activity.class);
-                        /*util.nombre=Nombres;
+                        util.nombre=Nombres;
                         util.apellido=Apellidos;
                         util.pId=Pid;
-                        util.sesion=true;*/
+                        util.sesion=true;
                        /* i.putExtra("Nombres",Nombres);
                         i.putExtra("Apellidos",Apellidos);
                         i.putExtra("Pid",Pid);
