@@ -8,10 +8,18 @@
             android:id="@+id/nav_inicio"
             android:icon="@drawable/ic_home"
             android:title="@string/menu_home" />
-        <item
-            android:id="@+id/nav_mis_compras"
+        <!--<item
+            android:id="@+id/nav_menu"
             android:icon="@drawable/ic_shop"
-            android:title="@string/menu_gallery" />
+            android:title="menuactivity" />-->
+        <item
+            android:id="@+id/nav_list_citas"
+            android:icon="@drawable/ic_shop"
+            android:title="listar Citas" />
+        <item
+            android:id="@+id/nav_add_citas"
+            android:icon="@drawable/ic_shop"
+            android:title="@string/crear_citas" />
         <item
             android:id="@+id/nav_configuracion"
             android:icon="@drawable/ic_setting"

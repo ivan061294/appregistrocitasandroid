@@ -227,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
                         guardarPreferencias();
                         Toast.makeText(MainActivity.this, Message, Toast.LENGTH_SHORT).show();
                         Log.i("response-1", "ID - " + response.toString()+Nombres.toString()+Apellidos.toString()+Pid.toString());
-                        Intent i = new Intent(MainActivity.this, Menu_Activity.class);
+                        Intent i = new Intent(MainActivity.this, InicioActivity.class);
                         util.nombre=Nombres;
                         util.apellido=Apellidos;
                         util.pId=Pid;

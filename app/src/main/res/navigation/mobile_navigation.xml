@@ -7,19 +7,26 @@
 
     <fragment
         android:id="@+id/nav_inicio"
-        android:name="com.alexandertutoriales.cliente.e_commerceapp.activity.ui.inicio.InicioFragment"
+        android:name="com.app.proyecto_citamedica.inicioapp"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_inicio" />
+        tools:layout="@layout/fragment_inicioapp" />
+    <activity
+        android:id="@+id/nav_menu"
+        android:name="com.app.proyecto_citamedica.Menu_Activity"
+        android:label="@string/menu_home"
+        tools:layout="@layout/activity_menu"
+        />
 
     <fragment
-        android:id="@+id/nav_mis_compras"
-        android:name="com.alexandertutoriales.cliente.e_commerceapp.activity.ui.compras.MisComprasFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_mis_compras" />
-
+        android:id="@+id/nav_list_citas"
+        android:name="com.app.proyecto_citamedica.ListarCitaFragment"
+        android:label="Listar citas"
+        tools:layout="@layout/fragment_listar_cita" />
     <fragment
-        android:id="@+id/nav_configuracion"
-        android:name="com.alexandertutoriales.cliente.e_commerceapp.activity.ui.configuracion.ConfiguracionFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_configuracion" />
+        android:id="@+id/nav_add_citas"
+        android:name="com.app.proyecto_citamedica.CrearCitaFragment"
+        android:label="@string/crear_citas"
+        tools:layout="@layout/fragment_crear_cita" />
+
+
 </navigation>
