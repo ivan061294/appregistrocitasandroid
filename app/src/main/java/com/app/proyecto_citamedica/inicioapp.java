@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import com.app.proyecto_citamedica.adapter.SliderAdapter;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
@@ -33,6 +34,7 @@ public class inicioapp extends Fragment {
     private GridView gvCategorias;
     private SliderView svCarrusel;
     private SliderAdapter sliderAdapter;
+    private TextView tvNombrenavBar,tvCorreonavBar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,6 +58,8 @@ public class inicioapp extends Fragment {
         //Platillos
         rcvPlatillosRecomendados = v.findViewById(R.id.rcvPlatillosRecomendados);
         rcvPlatillosRecomendados.setLayoutManager(new GridLayoutManager(getContext(), 1));
+
+
 
     }
     private void initAdapter() {

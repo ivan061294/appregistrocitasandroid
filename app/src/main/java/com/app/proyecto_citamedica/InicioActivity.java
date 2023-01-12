@@ -32,6 +32,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.sql.Date;
 import java.sql.Time;
 
+import Entidades.util;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
@@ -39,6 +40,7 @@ public class InicioActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityInicioBinding binding;
+    private TextView tvNombrenavBar,tvCorreonavBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,8 @@ public class InicioActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_inicio);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+
     }
 
     @Override
@@ -131,7 +135,7 @@ public class InicioActivity extends AppCompatActivity {
 
     //Método para cerrar sesión
     private void logout() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(InicioActivity.this);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = preferences.edit();
         editor.remove("preferenciasLogin");
         editor.apply();

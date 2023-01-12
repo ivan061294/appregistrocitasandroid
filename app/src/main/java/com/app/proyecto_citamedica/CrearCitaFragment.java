@@ -2,57 +2,70 @@ package com.app.proyecto_citamedica;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ScrollView;
+import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CrearCitaFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+import com.google.android.material.textfield.TextInputLayout;
+
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.TimeZone;
+
+import Entidades.Citas;
+import Entidades.ClassCboModel;
+import Entidades.util;
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
+
 public class CrearCitaFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public CrearCitaFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CrearCitaFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static CrearCitaFragment newInstance(String param1, String param2) {
-        CrearCitaFragment fragment = new CrearCitaFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private Button btnGuardarC;
+    private AutoCompleteTextView dropdownEspecialidad,dropdownHorario,dropdownDisponible;
+    private EditText edtComentario,edtFAtencion,edtPaciente;
+    private TextInputLayout txtInputTipoHorario,txtInputTipoEspecialidad,txtInputMedicoDisponible,txtInputComentario,txtInputFAtencion;
+    private static String URL_BASE="https://appcolegiophp.herokuapp.com";
+    private static String OBTENER_HORARIO="/obtenerHorario.php";
+    private static String OBTENER_ESPECIALIDAD="/obtenerEspecialidad.php";
+    private static String OBTENER_MEDICOS="/obtenerMedicos.php?";
+    public static String REGSISTRAR_CITA="/registrarCita.php";
+    public static String ACTUALIZAR_CITA="/actualizarCita.php";
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+    public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        init(view);
+        obtenerHorarios();
+        obtenerEspecialidad();
+        //loadData();
     }
 
     @Override
@@ -61,4 +74,362 @@ public class CrearCitaFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_crear_cita, container, false);
     }
+
+    private void init(View v){
+        dropdownEspecialidad = v.findViewById(R.id.dropdownEspecialidad);
+        dropdownHorario = v.findViewById(R.id.dropdownHorario);
+        dropdownDisponible = v.findViewById(R.id.dropdownDisponible);
+        btnGuardarC = v.findViewById(R.id.btnGuardarC);
+        edtComentario = v.findViewById(R.id.edtComentario);
+        edtFAtencion = v.findViewById(R.id.edtFAtencion);
+        edtFAtencion = v.findViewById(R.id.edtFAtencion);
+        txtInputTipoHorario = v.findViewById(R.id.txtInputTipoHorario);
+        txtInputTipoEspecialidad = v.findViewById(R.id.txtInputTipoEspecialidad);
+        txtInputMedicoDisponible = v.findViewById(R.id.txtInputMedicoDisponible);
+        txtInputFAtencion =v.findViewById(R.id.txtInputFechaAtencion);
+        txtInputComentario = v.findViewById(R.id.txtInputComentario);
+        edtPaciente=v.findViewById(R.id.edtPaciente);
+
+        edtPaciente.setEnabled(false);
+
+        edtPaciente.setText(util.nombre+" "+util.apellido );
+        btnGuardarC.setOnClickListener(vv -> {
+            if (validar()) {
+
+                /*ActualizarcitaFragment fragmentcita = new ActualizarcitaFragment();
+                FragmentTransaction fragmentTransaction;
+                FragmentManager fragmentManager;
+                fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+
+                fragmentTransaction.replace(R.id.nav_host_fragment_content_inicio, fragmentcita)
+                        .addToBackStack(null)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();*/
+
+            }else{
+                errorMessage("Por favor complete los campos!");
+            }
+        });
+        dropdownHorario.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String nameValueCbo=dropdownHorario.getText().toString();
+                Log.i("nameValueCbo",nameValueCbo);
+                boolean isSelected=false;
+                for(ClassCboModel objeto : util.lsthorarios){
+                    Log.i("Horiofor",objeto.toString());
+                    Log.i("namevalucbo",nameValueCbo);
+                    if (!(objeto.valor.equals("Seleccione")) && objeto.valor.equals(nameValueCbo)) {
+                        isSelected=true;
+                        txtInputTipoHorario.setErrorEnabled(false);
+                    }
+
+                }
+                if (isSelected) {
+                    dropdownEspecialidad.setEnabled(true);
+                    String selectEspecialidad=dropdownEspecialidad.getText().toString();
+                    if (!(selectEspecialidad.isEmpty())  && !(selectEspecialidad.equals("Seleccione"))) {
+
+                        for(ClassCboModel objeto : util.lstEspecialidad){
+
+                            if (!(objeto.valor.equals("Seleccione")) && objeto.getValor().equals(selectEspecialidad)) {
+
+                                dropdownEspecialidad.setSelection(util.lstEspecialidad.indexOf(objeto));
+
+                                return;
+                            }
+                        }
+                    }
+
+                }else{
+                    dropdownEspecialidad.setEnabled(false);
+                    dropdownDisponible.setEnabled(false);
+
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        dropdownEspecialidad.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String nameValueCbo=dropdownEspecialidad.getText().toString();
+                Log.i("nameValueCboespecialidadS",nameValueCbo);
+                dropdownDisponible.setEnabled(false);
+                for(ClassCboModel objeto : util.lstEspecialidad){
+                    if (!(objeto.valor.equals("Seleccione")) && objeto.valor.equals(nameValueCbo)) {
+                        obtenerMedicos(objeto.getId());
+                        dropdownDisponible.setEnabled(true);
+                        txtInputTipoEspecialidad.setErrorEnabled(false);
+                    }
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        dropdownDisponible.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String nameValueCbo=dropdownDisponible.getText().toString();
+                Log.i("nameValueCboMedico",nameValueCbo);
+                for(ClassCboModel objeto : util.lstMedicos){
+                    if (!(objeto.valor.equalsIgnoreCase("Seleccione")) && objeto.valor.equals(nameValueCbo)) {
+
+                        txtInputMedicoDisponible.setErrorEnabled(false);
+                    }
+
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        edtComentario.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                txtInputComentario.setErrorEnabled(false);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        MaterialDatePicker datePicker = MaterialDatePicker.Builder.datePicker().
+                setTitleText("Seleccione Fecha").setSelection(MaterialDatePicker.todayInUtcMilliseconds()).build();
+        edtFAtencion.setOnClickListener(vv->{
+            datePicker.show(getActivity().getSupportFragmentManager(), "Material_Date_picker");
+            datePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
+                @Override
+                public void onPositiveButtonClick(Long selection) {
+                    Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+                    calendar.setTimeInMillis(selection);
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                    String formattedDate  = format.format(calendar.getTime());
+                    edtFAtencion.setText(formattedDate);
+                    txtInputFAtencion.setErrorEnabled(false);
+
+                }
+            });
+
+        });
+
+
+    }
+    private boolean validar() {
+        boolean retorno = true;
+        String horario,especialidad,mDisponible,comentario,fAtencion;
+
+        horario = dropdownHorario.getText().toString();
+        especialidad = dropdownHorario.getText().toString();
+        mDisponible = dropdownHorario.getText().toString();
+        comentario = edtComentario.getText().toString();
+        fAtencion = edtFAtencion.getText().toString();
+
+        if (horario.isEmpty()||horario.equalsIgnoreCase("Seleccione")) {
+            txtInputTipoHorario.setError("Seleccione un horario");
+            retorno = false;
+        } else {
+            txtInputTipoHorario.setErrorEnabled(false);
+        }
+        if (especialidad.isEmpty()||especialidad.equalsIgnoreCase("Seleccione")) {
+            txtInputTipoEspecialidad.setError("Seleccione una Especialidad");
+            retorno = false;
+        } else {
+            txtInputTipoEspecialidad.setErrorEnabled(false);
+        }
+        if (mDisponible.isEmpty()||mDisponible.equalsIgnoreCase("Seleccione")) {
+            txtInputMedicoDisponible.setError("Seleccione un Medico ");
+            retorno = false;
+        } else {
+            txtInputMedicoDisponible.setErrorEnabled(false);
+        }
+        if (comentario.isEmpty()||comentario.equalsIgnoreCase("Seleccione")) {
+            txtInputComentario.setError("Escriba un Comentario");
+            retorno = false;
+        } else {
+            txtInputComentario.setErrorEnabled(false);
+        }
+        if (fAtencion.isEmpty()) {
+            txtInputFAtencion.setError("Seleccione una Fecha de Atencion");
+            retorno = false;
+        } else {
+            txtInputFAtencion.setErrorEnabled(false);
+        }
+        return retorno;
+    }
+    public void errorMessage(String message) {
+        new SweetAlertDialog(getContext(),
+                SweetAlertDialog.ERROR_TYPE).setTitleText("Oops...").setContentText(message).show();
+    }
+    private void obtenerHorarios(){
+        Log.i("obteniendo alumnos","service");
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+
+        StringRequest stringRequest = new StringRequest(
+                Request.Method.GET, URL_BASE+OBTENER_HORARIO, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    JSONObject objSon = new JSONObject(response);
+
+                    JSONArray arr = objSon.getJSONArray("data");
+
+                    ArrayList<ClassCboModel> lstModelCbo = new ArrayList<ClassCboModel>();
+                    lstModelCbo.add(new ClassCboModel("0","Seleccione"));
+                    for (int i = 0; i < arr.length(); i++) {
+                        JSONObject horarioObject=arr.getJSONObject(i);
+                        lstModelCbo.add(new ClassCboModel(horarioObject.getString("Hid"),horarioObject.getString("tipoHorario")));
+
+                    }
+                    cargarSpinnerhorario(lstModelCbo);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("Error servicio",error.getMessage());
+            }
+        });
+
+        requestQueue.add(stringRequest);
+
+
+    }
+
+    private void obtenerEspecialidad(){
+        Log.i("obteniendo especialidades","service");
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+
+        StringRequest stringRequest = new StringRequest(
+                Request.Method.GET, URL_BASE+OBTENER_ESPECIALIDAD, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject objSon = new JSONObject(response);
+                    JSONArray arr = objSon.getJSONArray("data");
+                    ArrayList<ClassCboModel> lstModelCbo = new ArrayList<ClassCboModel>();
+                    lstModelCbo.add(new ClassCboModel("0","Seleccione"));
+                    for (int i = 0; i < arr.length(); i++) {
+                        JSONObject horarioObject=arr.getJSONObject(i);
+                        lstModelCbo.add(new ClassCboModel(horarioObject.getString("Eid"),horarioObject.getString("nombre")));
+                    }
+                    cargarSpinnerEspecialidad(lstModelCbo);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("Error servicio",error.getMessage());
+            }
+        });
+
+        requestQueue.add(stringRequest);
+
+
+    }
+
+    private void obtenerMedicos(String especialidadId){
+        Log.i("obteniendo MEDICOS","service");
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+
+        StringRequest stringRequest = new StringRequest(
+                Request.Method.GET, URL_BASE+OBTENER_MEDICOS+especialidadId, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject objSon = new JSONObject(response);
+                    JSONArray arr = objSon.getJSONArray("data");
+                    ArrayList<ClassCboModel> lstModelCbo = new ArrayList<ClassCboModel>();
+                    lstModelCbo.add(new ClassCboModel("0","Seleccione"));
+                    for (int i = 0; i < arr.length(); i++) {
+                        JSONObject horarioObject=arr.getJSONObject(i);
+                        lstModelCbo.add(new ClassCboModel(horarioObject.getString("Mid"),horarioObject.getString("nombres")));
+
+                    }
+                    cargarSpinnerMedicos(lstModelCbo);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("Error servicio",error.getMessage());
+            }
+        });
+
+        requestQueue.add(stringRequest);
+
+
+    }
+
+
+    public void cargarSpinnerEspecialidad(ArrayList<ClassCboModel> lstModelCbo){
+        util.lstEspecialidad.clear();
+        util.lstEspecialidad=lstModelCbo;
+        ArrayAdapter<ClassCboModel> modelo = new ArrayAdapter<ClassCboModel>(getContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
+                lstModelCbo);
+        dropdownEspecialidad.setAdapter(modelo);
+    }
+    public void cargarSpinnerMedicos(ArrayList<ClassCboModel> lstModelCbo) {
+        util.lstMedicos.clear();
+        util.lstMedicos = lstModelCbo;
+        ArrayAdapter<ClassCboModel> modelo = new ArrayAdapter<ClassCboModel>(getContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
+                lstModelCbo);
+        dropdownDisponible.setAdapter(modelo);
+    }
+    public void cargarSpinnerhorario(ArrayList<ClassCboModel> lstModelCbo){
+        util.lsthorarios.clear();
+        util.lsthorarios=lstModelCbo;
+        ArrayAdapter<ClassCboModel> modelo = new ArrayAdapter<ClassCboModel>(getContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
+                lstModelCbo);
+        dropdownHorario.setAdapter(modelo);
+    }
+
 }

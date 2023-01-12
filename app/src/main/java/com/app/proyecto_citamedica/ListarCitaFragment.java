@@ -83,7 +83,7 @@ public class ListarCitaFragment extends Fragment {
         btnEditarL.setOnClickListener(vv -> {
             if (validar()) {
                 scroolLcitas.setVisibility(View.INVISIBLE);
-                CrearCitaFragment fragmentcita = new CrearCitaFragment();
+                ActualizarcitaFragment fragmentcita = new ActualizarcitaFragment();
                 FragmentTransaction fragmentTransaction;
                 FragmentManager fragmentManager;
                 fragmentManager = getActivity().getSupportFragmentManager();
