@@ -10,10 +10,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import com.app.proyecto_citamedica.adapter.SliderAdapter;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
@@ -26,18 +28,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Entidades.SliderItem;
+import Entidades.util;
 
 public class inicioapp extends Fragment {
 
-    private RecyclerView rcvPlatillosRecomendados;
-    private GridView gvCategorias;
+
+    private TextView tvNombre,tvCorreo,gvCategorias,TextoAdicional,rcvPlatillosRecomendados;
     private SliderView svCarrusel;
     private SliderAdapter sliderAdapter;
+    String nombre,apellido,dni;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_inicioapp, container, false);
     }
 
@@ -55,8 +60,14 @@ public class inicioapp extends Fragment {
         gvCategorias = v.findViewById(R.id.gvCategorias);
         //Platillos
         rcvPlatillosRecomendados = v.findViewById(R.id.rcvPlatillosRecomendados);
-        rcvPlatillosRecomendados.setLayoutManager(new GridLayoutManager(getContext(), 1));
-
+        TextoAdicional=v.findViewById(R.id.textoAdicional);
+        tvNombre=v.findViewById(R.id.tvNombre);
+        tvCorreo=v.findViewById(R.id.tvCorreo);
+        apellido=util.apellido;
+        nombre=util.nombre;
+        dni=util.dni;
+        tvNombre.setText(nombre+" "+apellido);
+        tvCorreo.setText(dni);
     }
     private void initAdapter() {
         //Carrusel de Imágenes

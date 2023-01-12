@@ -231,6 +231,7 @@ public class MainActivity extends AppCompatActivity {
                         util.nombre=Nombres;
                         util.apellido=Apellidos;
                         util.pId=Pid;
+                        util.dni=edtMail.getText().toString();
                         util.sesion=true;
                        /* i.putExtra("Nombres",Nombres);
                         i.putExtra("Apellidos",Apellidos);

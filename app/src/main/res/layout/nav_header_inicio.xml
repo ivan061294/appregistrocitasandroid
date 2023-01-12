@@ -18,19 +18,17 @@
         android:layout_height="70dp"
         android:contentDescription="@string/nav_header_desc"
         android:paddingTop="8dp"
-        android:src="@drawable/foto_alex_circle" />
+        android:src="@drawable/foto_usuario" />
 
     <TextView
         android:id="@+id/tvNombre"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
-        android:text="@string/nav_header_title"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
         android:id="@+id/tvCorreo"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/nav_header_subtitle" />
+        android:layout_height="wrap_content" />
 </LinearLayout>
