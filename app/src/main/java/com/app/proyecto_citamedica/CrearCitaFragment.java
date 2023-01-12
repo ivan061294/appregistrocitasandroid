@@ -1,5 +1,6 @@
 package com.app.proyecto_citamedica;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -39,6 +41,8 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.TimeZone;
 
 import Entidades.Citas;
@@ -52,6 +56,7 @@ public class CrearCitaFragment extends Fragment {
     private AutoCompleteTextView dropdownEspecialidad,dropdownHorario,dropdownDisponible;
     private EditText edtComentario,edtFAtencion,edtPaciente;
     private TextInputLayout txtInputTipoHorario,txtInputTipoEspecialidad,txtInputMedicoDisponible,txtInputComentario,txtInputFAtencion;
+    private static String idhorario,idespecialidad,idmedico,estado,citaid;
     private static String URL_BASE="https://appcolegiophp.herokuapp.com";
     private static String OBTENER_HORARIO="/obtenerHorario.php";
     private static String OBTENER_ESPECIALIDAD="/obtenerEspecialidad.php";
@@ -89,22 +94,25 @@ public class CrearCitaFragment extends Fragment {
         txtInputFAtencion =v.findViewById(R.id.txtInputFechaAtencion);
         txtInputComentario = v.findViewById(R.id.txtInputComentario);
         edtPaciente=v.findViewById(R.id.edtPaciente);
+        dropdownEspecialidad.setEnabled(false);
+        dropdownDisponible.setEnabled(false);
 
         edtPaciente.setEnabled(false);
 
         edtPaciente.setText(util.nombre+" "+util.apellido );
         btnGuardarC.setOnClickListener(vv -> {
             if (validar()) {
+                Citas cita = new Citas();
+                cita.setHorarioId(idhorario);
+                cita.setEspecialidadId(idespecialidad);
+                cita.setMedicoId(idmedico);
+                cita.setObservaciones(edtComentario.getText().toString());
+                cita.setFechaAtencion(edtFAtencion.getText().toString());
+                cita.setPacienteId(util.pId);
+                cita.setUsuarioCreacion(util.nombre);
+                cita.setEstado("Pendiente");
+                Registrarcita(cita);
 
-                /*ActualizarcitaFragment fragmentcita = new ActualizarcitaFragment();
-                FragmentTransaction fragmentTransaction;
-                FragmentManager fragmentManager;
-                fragmentManager = getActivity().getSupportFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
-
-                fragmentTransaction.replace(R.id.nav_host_fragment_content_inicio, fragmentcita)
-                        .addToBackStack(null)
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();*/
 
             }else{
                 errorMessage("Por favor complete los campos!");
@@ -126,6 +134,7 @@ public class CrearCitaFragment extends Fragment {
                     Log.i("namevalucbo",nameValueCbo);
                     if (!(objeto.valor.equals("Seleccione")) && objeto.valor.equals(nameValueCbo)) {
                         isSelected=true;
+                        idhorario= objeto.getId();
                         txtInputTipoHorario.setErrorEnabled(false);
                     }
 
@@ -172,6 +181,8 @@ public class CrearCitaFragment extends Fragment {
                 dropdownDisponible.setEnabled(false);
                 for(ClassCboModel objeto : util.lstEspecialidad){
                     if (!(objeto.valor.equals("Seleccione")) && objeto.valor.equals(nameValueCbo)) {
+                        idespecialidad= objeto.getId();
+                        dropdownDisponible.setText("");
                         obtenerMedicos(objeto.getId());
                         dropdownDisponible.setEnabled(true);
                         txtInputTipoEspecialidad.setErrorEnabled(false);
@@ -197,7 +208,7 @@ public class CrearCitaFragment extends Fragment {
                 Log.i("nameValueCboMedico",nameValueCbo);
                 for(ClassCboModel objeto : util.lstMedicos){
                     if (!(objeto.valor.equalsIgnoreCase("Seleccione")) && objeto.valor.equals(nameValueCbo)) {
-
+                        idmedico= objeto.getId();
                         txtInputMedicoDisponible.setErrorEnabled(false);
                     }
 
@@ -252,8 +263,8 @@ public class CrearCitaFragment extends Fragment {
         String horario,especialidad,mDisponible,comentario,fAtencion;
 
         horario = dropdownHorario.getText().toString();
-        especialidad = dropdownHorario.getText().toString();
-        mDisponible = dropdownHorario.getText().toString();
+        especialidad = dropdownEspecialidad.getText().toString();
+        mDisponible = dropdownDisponible.getText().toString();
         comentario = edtComentario.getText().toString();
         fAtencion = edtFAtencion.getText().toString();
 
@@ -289,12 +300,17 @@ public class CrearCitaFragment extends Fragment {
         }
         return retorno;
     }
+    public void successMessage(String message) {
+        new SweetAlertDialog(getContext(),
+                SweetAlertDialog.SUCCESS_TYPE).setTitleText("Buen Trabajo!")
+                .setContentText(message).show();
+    }
     public void errorMessage(String message) {
         new SweetAlertDialog(getContext(),
                 SweetAlertDialog.ERROR_TYPE).setTitleText("Oops...").setContentText(message).show();
     }
     private void obtenerHorarios(){
-        Log.i("obteniendo alumnos","service");
+        Log.i("obteniendo horarios","service");
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
         StringRequest stringRequest = new StringRequest(
@@ -308,7 +324,7 @@ public class CrearCitaFragment extends Fragment {
                     JSONArray arr = objSon.getJSONArray("data");
 
                     ArrayList<ClassCboModel> lstModelCbo = new ArrayList<ClassCboModel>();
-                    lstModelCbo.add(new ClassCboModel("0","Seleccione"));
+
                     for (int i = 0; i < arr.length(); i++) {
                         JSONObject horarioObject=arr.getJSONObject(i);
                         lstModelCbo.add(new ClassCboModel(horarioObject.getString("Hid"),horarioObject.getString("tipoHorario")));
@@ -346,7 +362,7 @@ public class CrearCitaFragment extends Fragment {
                     JSONObject objSon = new JSONObject(response);
                     JSONArray arr = objSon.getJSONArray("data");
                     ArrayList<ClassCboModel> lstModelCbo = new ArrayList<ClassCboModel>();
-                    lstModelCbo.add(new ClassCboModel("0","Seleccione"));
+
                     for (int i = 0; i < arr.length(); i++) {
                         JSONObject horarioObject=arr.getJSONObject(i);
                         lstModelCbo.add(new ClassCboModel(horarioObject.getString("Eid"),horarioObject.getString("nombre")));
@@ -383,7 +399,7 @@ public class CrearCitaFragment extends Fragment {
                     JSONObject objSon = new JSONObject(response);
                     JSONArray arr = objSon.getJSONArray("data");
                     ArrayList<ClassCboModel> lstModelCbo = new ArrayList<ClassCboModel>();
-                    lstModelCbo.add(new ClassCboModel("0","Seleccione"));
+
                     for (int i = 0; i < arr.length(); i++) {
                         JSONObject horarioObject=arr.getJSONObject(i);
                         lstModelCbo.add(new ClassCboModel(horarioObject.getString("Mid"),horarioObject.getString("nombres")));
@@ -407,6 +423,52 @@ public class CrearCitaFragment extends Fragment {
         requestQueue.add(stringRequest);
 
 
+    }
+
+    public void Registrarcita(Citas cita){
+
+        StringRequest stringRequest=new StringRequest(Request.Method.POST, URL_BASE+REGSISTRAR_CITA, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    String success = jsonObject.getString("success");
+                    String message = jsonObject.getString("message");
+                    if (success.equals("1")) {
+                        successMessage(message);
+                        Intent i = new Intent(getContext(),InicioActivity.class);
+                        startActivity(i);
+                    }
+                } catch (JSONException ex) {
+                    errorMessage("Error en Registrar");
+                    Log.i("error",ex.toString());
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                errorMessage("Error en Servicio Externo");
+                Log.i("error",error.toString());
+            }
+        })
+        {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> param=new HashMap<>();
+                param.put("Mid",cita.getMedicoId());
+                param.put("Pid",cita.getPacienteId());
+                param.put("Eid",cita.getEspecialidadId());
+                param.put("FechaAtencion",cita.getFechaAtencion());
+                param.put("Hid",cita.getHorarioId());
+                param.put("observaciones",cita.getObservaciones());
+                param.put("usuarioRegistro",cita.getUsuarioCreacion());
+                return param;
+            }
+        };
+        RequestQueue requestQueue= Volley.newRequestQueue(getContext());
+        requestQueue.add(stringRequest);
     }
 
 

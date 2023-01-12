@@ -10,4 +10,5 @@ public class util {
     public static ArrayList<ClassCboModel> lstEstados = new ArrayList<ClassCboModel>();
     public static ArrayList<Citas> lstCitas1 = new ArrayList<Citas>();
     public static boolean sesion=false;
+
 }

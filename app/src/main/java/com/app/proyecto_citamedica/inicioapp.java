@@ -84,18 +84,7 @@ public class inicioapp extends Fragment {
         lista.add(new SliderItem(R.drawable.slider3, "Los Mejores Medicos"));
         lista.add(new SliderItem(R.drawable.slider4, "Los Mayor Rapidez En Atencion"));
         sliderAdapter.updateItem(lista);
-       /* categoriaViewModel.listarCategoriasActivas().observe(getViewLifecycleOwner(), response -> {
-            if(response.getRpta() == 1){
-                categoriaAdapter.clear();
-                categoriaAdapter.addAll(response.getBody());
-                categoriaAdapter.notifyDataSetChanged();
-            }else{
-                System.out.println("Error al obtener las categorías activas");
-            }
-        });
-        platilloViewModel.listarPlatillosRecomendados().observe(getViewLifecycleOwner(), response -> {
-            adapter.updateItems(response.getBody());
-        });*/
+
 
     }
 

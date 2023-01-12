@@ -88,20 +88,6 @@ public class InicioActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void mostrarBolsa() {
-       /* Intent i = new Intent(this, ListarCitaFragment.class);
-        startActivity(i);
-        overridePendingTransition(R.anim.left_in, R.anim.left_out);*/
-        ListarCitaFragment fragmentcita = new ListarCitaFragment();
-        FragmentTransaction fragmentTransaction;
-        FragmentManager fragmentManager;
-        fragmentManager = getSupportFragmentManager();
-        fragmentTransaction = fragmentManager.beginTransaction();
-        ScrollView scrrolremplazo;
-        scrrolremplazo=findViewById(R.id.scroolinicio);
-        scrrolremplazo.setVisibility(View.INVISIBLE);
-        fragmentTransaction.replace(R.id.linealayoutremmplazo, fragmentcita).commit();
-    }
 
     @Override
     protected void onStart() {

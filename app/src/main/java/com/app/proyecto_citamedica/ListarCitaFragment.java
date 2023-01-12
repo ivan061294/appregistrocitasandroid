@@ -82,12 +82,15 @@ public class ListarCitaFragment extends Fragment {
         edtPaciente.setText(util.nombre+" "+util.apellido );
         btnEditarL.setOnClickListener(vv -> {
             if (validar()) {
+                Bundle datosAEnviar = new Bundle();
+                datosAEnviar.putString("citasdrown",dropdowncitas.getText().toString());
                 scroolLcitas.setVisibility(View.INVISIBLE);
                 ActualizarcitaFragment fragmentcita = new ActualizarcitaFragment();
                 FragmentTransaction fragmentTransaction;
                 FragmentManager fragmentManager;
                 fragmentManager = getActivity().getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentcita.setArguments(datosAEnviar);
 
                 fragmentTransaction.replace(R.id.nav_host_fragment_content_inicio, fragmentcita)
                         .addToBackStack(null)
