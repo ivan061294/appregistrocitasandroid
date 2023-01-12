@@ -1,4 +1,5 @@
 plugins {
+
     id 'com.android.application'
 }
 
@@ -26,6 +27,14 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    packagingOptions{
+        exclude 'META-INF/NOTICE.md'
+        exclude 'META-INF/LICENSE.md'
+    }
+    buildFeatures {
+        viewBinding true
+    }
+
 }
 
 dependencies {
@@ -38,8 +47,30 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
+
+    // Lifecycle components
+    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
+    annotationProcessor "androidx.lifecycle:lifecycle-compiler:2.3.1"
+
+    // Retrofit
+    implementation "com.squareup.retrofit2:retrofit:2.9.0"
+    implementation "com.squareup.retrofit2:converter-gson:2.9.0"
+    implementation "com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2"
+
+    // Dagger
+    implementation "com.google.dagger:dagger-android:2.35.1"
+    annotationProcessor "com.google.dagger:dagger-android-processor:2.33"
+
     ///Voley
     implementation 'com.android.volley:volley:1.2.1'
     //Sweet Alert
     implementation 'com.github.f0ris.sweetalert:library:1.6.2'
+    //ImagenView Circle
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    //Carrusel
+    implementation 'com.github.smarteist:autoimageslider:1.4.0'
+
+    //Glide
+    implementation "com.github.bumptech.glide:glide:4.11.0"
 }
