@@ -61,7 +61,6 @@ public static String cid="";
         String Pid=util.pId;
         tvPacienteL.setText("Paciente : "+Nombre+"  "+Apellido);
         obtenerCitas(Integer.parseInt(Pid));
-
         btnSalir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
