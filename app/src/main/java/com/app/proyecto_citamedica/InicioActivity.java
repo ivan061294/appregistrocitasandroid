@@ -2,6 +2,7 @@ package com.app.proyecto_citamedica;
 
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -63,7 +64,11 @@ public class InicioActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-
+        View headerView = navigationView.getHeaderView(0);
+        TextView tvNombreNavBar = (TextView) headerView.findViewById(R.id.tvNombreNavBar);
+        TextView tvDniNavBar = (TextView) headerView.findViewById(R.id.tvDniNavBar);
+        tvNombreNavBar.setText(util.nombre+ " " +util.apellido);
+        tvDniNavBar.setText(util.dni);
     }
 
     @Override
@@ -135,11 +140,16 @@ public class InicioActivity extends AppCompatActivity {
 
     //Método para cerrar sesión
     private void logout() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+       /* SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = preferences.edit();
         editor.remove("preferenciasLogin");
-        editor.apply();
-        this.finish();
+        editor.apply();*/
+       // finish();
+
+        SharedPreferences preferences=getSharedPreferences("preferenciasLogin", Context.MODE_PRIVATE);
+        preferences.edit().clear().apply();
+        Intent i=new Intent(InicioActivity.this,MainActivity.class);
+        startActivity(i);
         this.overridePendingTransition(R.anim.left_in, R.anim.left_out);
     }
 

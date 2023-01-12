@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,19 +28,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Entidades.SliderItem;
+import Entidades.util;
 
 public class inicioapp extends Fragment {
 
-    private RecyclerView rcvPlatillosRecomendados;
-    private GridView gvCategorias;
+
+    private TextView tvNombre,tvCorreo,gvCategorias,TextoAdicional,rcvPlatillosRecomendados;
     private SliderView svCarrusel;
     private SliderAdapter sliderAdapter;
+
     private TextView tvNombrenavBar,tvCorreonavBar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_inicioapp, container, false);
     }
 
@@ -57,9 +61,6 @@ public class inicioapp extends Fragment {
         gvCategorias = v.findViewById(R.id.gvCategorias);
         //Platillos
         rcvPlatillosRecomendados = v.findViewById(R.id.rcvPlatillosRecomendados);
-        rcvPlatillosRecomendados.setLayoutManager(new GridLayoutManager(getContext(), 1));
-
-
 
     }
     private void initAdapter() {
