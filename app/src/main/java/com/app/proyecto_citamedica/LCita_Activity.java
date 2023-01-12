@@ -166,6 +166,7 @@ public static String cid="";
 
 
     }
+
     public void cargarSpinnerCitas(ArrayList<Citas>lstCitas2){
         util.lstCitas1.clear();
         util.lstCitas1=lstCitas2;
@@ -173,6 +174,7 @@ public static String cid="";
                 lstCitas2);
         spCita.setAdapter(modelo);
     }
+
     public void inicializar(){
         tvPacienteL=findViewById(R.id.tvPacienteL);
         btnECita=findViewById(R.id.btnEditarL);
