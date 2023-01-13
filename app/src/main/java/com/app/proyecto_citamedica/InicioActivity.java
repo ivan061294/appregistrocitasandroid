@@ -57,7 +57,7 @@ public class InicioActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_inicio, R.id.nav_list_citas,R.id.nav_add_citas, R.id.nav_configuracion,R.id.nav_menu)
+                R.id.nav_inicio, R.id.nav_list_citas,R.id.nav_add_citas, R.id.nav_menu)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_inicio);
@@ -92,48 +92,18 @@ public class InicioActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        loadData();
-    }
-
-    @SuppressLint("UnsafeExperimentalUsageError")
-    private void loadData() {
-       /* SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        final Gson g = new GsonBuilder()
-                .registerTypeAdapter(Date.class, new DateSerializer())
-                .registerTypeAdapter(Time.class, new TimeSerializer())
-                .create();
-        String usuarioJson = sp.getString("UsuarioJson", null);
-        if(usuarioJson != null){
-            final Usuario u = g.fromJson(usuarioJson, Usuario.class);
-            final View vistaHeader = binding.navView.getHeaderView(0);
-            final TextView tvNombre = vistaHeader.findViewById(R.id.tvNombre),
-                    tvCorreo = vistaHeader.findViewById(R.id.tvCorreo);
-            final CircleImageView imgFoto = vistaHeader.findViewById(R.id.imgFotoPerfil);
-            tvNombre.setText(u.getCliente().getNombreCompleto());
-            tvCorreo.setText(u.getEmail());
-            String url = ConfigApi.baseUrlE + "/api/documento-almacenado/download/" + u.getCliente().getFoto().getFileName();
-            final Picasso picasso = new Picasso.Builder(this)
-                    .downloader(new OkHttp3Downloader(ConfigApi.getClient()))
-                    .build();
-            picasso.load(url)
-                    .error(R.drawable.image_not_found)
-                    .into(imgFoto);
-        }
-        BadgeDrawable badgeDrawable = BadgeDrawable.create(this);
-        badgeDrawable.setNumber(Carrito.getDetallePedidos().size());
-        BadgeUtils.attachBadgeDrawable(badgeDrawable, findViewById(R.id.toolbar), R.id.bolsaCompras);*/
     }
 
     //Método para cerrar sesión
     private void logout() {
-       /* SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = preferences.edit();
         editor.remove("preferenciasLogin");
-        editor.apply();*/
-       // finish();
-
-        SharedPreferences preferences=getSharedPreferences("preferenciasLogin", Context.MODE_PRIVATE);
-        preferences.edit().clear().apply();
+        editor.apply();
+        finish();
+        /*SharedPreferences preferences=getSharedPreferences("preferenciasLogin", Context.MODE_PRIVATE);
+        preferences.edit().clear().apply();*/
         Intent i=new Intent(InicioActivity.this,MainActivity.class);
         startActivity(i);
         this.overridePendingTransition(R.anim.left_in, R.anim.left_out);

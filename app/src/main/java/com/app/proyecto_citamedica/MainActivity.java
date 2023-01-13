@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         this.initViewModel();
         this.init();
-        recuperarPreferencias();
+        //recuperarPreferencias();
     }
 
     private void initViewModel() {
@@ -188,10 +188,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String pref = preferences.getString("UsuarioJson", "");
+        String pref = preferences.getString("preferenciasLogin", "");
         if(!pref.equals("")){
             toastCorrecto("Se detecto una sesión activa, el login será omitido!");
-            this.startActivity(new Intent(this, Menu_Activity.class));
+            this.startActivity(new Intent(this, InicioActivity.class));
             this.overridePendingTransition(R.anim.left_in, R.anim.left_out);
         }
     }
@@ -208,7 +208,10 @@ public class MainActivity extends AppCompatActivity {
                             .show();
                 }).setConfirmClickListener(sweetAlertDialog -> {
                     sweetAlertDialog.dismissWithAnimation();
+                    //
+
                     System.exit(0);
+                    finish();
                 }).show();
     }
 
@@ -224,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
                     String Apellidos = jsonObject.getString("apellidos");
                     String Pid = jsonObject.getString("pid");
                     if (success.equals("1")) {
-                        guardarPreferencias();
+
                         Toast.makeText(MainActivity.this, Message, Toast.LENGTH_SHORT).show();
                         Log.i("response-1", "ID - " + response.toString()+Nombres.toString()+Apellidos.toString()+Pid.toString());
                         Intent i = new Intent(MainActivity.this, InicioActivity.class);
@@ -233,6 +236,7 @@ public class MainActivity extends AppCompatActivity {
                         util.pId=Pid;
                         util.dni=edtMail.getText().toString();
                         util.sesion=true;
+                        guardarPreferencias();
                        /* i.putExtra("Nombres",Nombres);
                         i.putExtra("Apellidos",Apellidos);
                         i.putExtra("Pid",Pid);
@@ -271,8 +275,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor=preferences.edit();
         editor.putString("usuario",edtMail.getText().toString());
         editor.putString("password",edtPassword.getText().toString());
-        editor.putBoolean("sesion", util.sesion);
-        editor.commit();
+        editor.apply();
     }
     public void recuperarPreferencias(){
         SharedPreferences preferences=getSharedPreferences("preferenciasLogin", Context.MODE_PRIVATE);

@@ -1,5 +1,6 @@
 package com.app.proyecto_citamedica;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -240,7 +241,10 @@ public class CrearCitaFragment extends Fragment {
         MaterialDatePicker datePicker = MaterialDatePicker.Builder.datePicker().
                 setTitleText("Seleccione Fecha").setSelection(MaterialDatePicker.todayInUtcMilliseconds()).build();
         edtFAtencion.setOnClickListener(vv->{
-            datePicker.show(getActivity().getSupportFragmentManager(), "Material_Date_picker");
+            Dialog dialog= datePicker.getDialog();
+            if (!(dialog!=null&&dialog.isShowing())) {
+                datePicker.show(getActivity().getSupportFragmentManager(), "Material_Date_picker10");
+            }
             datePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
                 @Override
                 public void onPositiveButtonClick(Long selection) {
@@ -437,8 +441,15 @@ public class CrearCitaFragment extends Fragment {
                     String message = jsonObject.getString("message");
                     if (success.equals("1")) {
                         successMessage(message);
-                        Intent i = new Intent(getContext(),InicioActivity.class);
-                        startActivity(i);
+                        inicioapp fragmentcita = new inicioapp();
+                        FragmentTransaction fragmentTransaction;
+                        FragmentManager fragmentManager;
+                        fragmentManager = getActivity().getSupportFragmentManager();
+                        fragmentTransaction = fragmentManager.beginTransaction();
+
+                        fragmentTransaction.replace(R.id.nav_host_fragment_content_inicio, fragmentcita)
+                                .addToBackStack(null)
+                                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
                     }
                 } catch (JSONException ex) {
                     errorMessage("Error en Registrar");

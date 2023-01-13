@@ -109,24 +109,7 @@ public class ListarCitaFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String nameValueCbo=dropdowncitas.getText().toString();
-                Log.i("nameValueCbo",nameValueCbo);
-                edtHorario.setText("");
-                edtEspecialidad.setText("");
-                edtMDisponible.setText("");
-                edtFAtencion.setText("");
-                //btnECita.setEnabled(false);
-                for(Citas objeto :util.lstCitas1){
-                    if (objeto.getcIdCbo().equalsIgnoreCase(nameValueCbo)) {
-                        txtInputCita.setErrorEnabled(false);
-                        Log.i("objeto encontrado",objeto.toString2());
-                        edtHorario.setText(objeto.getNomHorario());
-                        edtEspecialidad.setText(objeto.getNomEspecialidad());
-                        edtMDisponible.setText(objeto.getNomMedico());
-                        edtFAtencion.setText(objeto.getFechaAtencion());
-                        //btnECita.setEnabled(true);
-                    }
-
-                }
+                setearDatosConponentes(nameValueCbo);
             }
 
             @Override
@@ -209,11 +192,39 @@ public class ListarCitaFragment extends Fragment {
     }
 
     public void cargarSpinnerCitas(ArrayList<Citas>lstCitas2){
-        util.lstCitas1.clear();
-        util.lstCitas1=lstCitas2;
-        ArrayAdapter<Citas> modelo = new ArrayAdapter<Citas>(getContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
-                lstCitas2);
-        dropdowncitas.setAdapter(modelo);
+
+        if (lstCitas2 != null && lstCitas2.size()>0) {
+            util.lstCitas1.clear();
+            util.lstCitas1=lstCitas2;
+            ArrayAdapter<Citas> modelo = new ArrayAdapter<Citas>(getContext(), R.layout.dropdown_item,
+                    lstCitas2);
+
+            dropdowncitas.setText(lstCitas2.get(0).getcIdCbo());
+            setearDatosConponentes(lstCitas2.get(0).getcIdCbo());
+            dropdowncitas.setAdapter(modelo);
+        }
+
+    }
+
+    public void setearDatosConponentes(String idCita){
+        String nameValueCbo=idCita;
+        Log.i("nameValueCbo",nameValueCbo);
+        edtHorario.setText("");
+        edtEspecialidad.setText("");
+        edtMDisponible.setText("");
+        edtFAtencion.setText("");
+        //btnECita.setEnabled(false);
+        for(Citas objeto :util.lstCitas1){
+            if (objeto.getcIdCbo().equalsIgnoreCase(nameValueCbo)) {
+                txtInputCita.setErrorEnabled(false);
+                Log.i("objeto encontrado",objeto.toString2());
+                edtHorario.setText(objeto.getNomHorario());
+                edtEspecialidad.setText(objeto.getNomEspecialidad());
+                edtMDisponible.setText(objeto.getNomMedico());
+                edtFAtencion.setText(objeto.getFechaAtencion());
+                //btnECita.setEnabled(true);
+            }
+        }
     }
 
 }
