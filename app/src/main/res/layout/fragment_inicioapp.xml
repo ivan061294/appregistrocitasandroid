@@ -71,8 +71,12 @@
                 android:numColumns="3"
                 android:textSize="15dp"
                 android:textColor="@color/purple_200"
-                android:text="Visítenos en Jr. Grau 356-359 – Lurín"
+                android:text="Av. Juan Velasco Alvarado cdra 1, Villa EL Salvador 15816"
                 />
+            <ImageView
+                android:layout_width="60mm"
+                android:layout_height="30mm"
+                android:src="@drawable/ubicacion"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -99,8 +103,12 @@
                     android:layout_marginBottom="8dp"
                     android:textSize="15dp"
                     android:textColor="@color/purple_200"
-                    android:text="Comuníquese con nosotros de Lunes a Sábado de 8 am hasta las 10pm."/>
+                    android:text="Comuníquese con nosotros de Lunes a Sábado de 7 am hasta las 7pm."/>
             </RelativeLayout>
+            <ImageView
+                android:layout_width="60mm"
+                android:layout_height="30mm"
+                android:src="@drawable/atencion"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -119,6 +127,10 @@
                 android:textSize="15dp"
                 android:textColor="@color/purple_200"
                 android:text="Trabajamos con el máximo profesionalismo para que los pacientes nos tengan plena confianza y dejen en nuestras manos el cuidado de su salud. Atendemos todos los requerimientos, ya que tenemos alta credibilidad en el sector."/>
+            <ImageView
+                android:layout_width="60mm"
+                android:layout_height="30mm"
+                android:src="@drawable/ambulancia"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
